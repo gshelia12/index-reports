@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index Wealth Management — Reports</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f5f7;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: #fff;
+      border-bottom: 3px solid #EB1C3C;
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header .logo-wrap img {
+      height: 52px;
+      display: block;
+    }
+    header .header-right {
+      text-align: right;
+    }
+    header .header-right h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a1a2e;
+    }
+    header .header-right p {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    /* ── Hero banner ── */
+    .hero {
+      background: linear-gradient(135deg, #EB1C3C 0%, #a01228 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+    }
+    .hero h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      font-size: 0.92rem;
+      opacity: 0.85;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .period-group { margin-bottom: 48px; }
+    .period-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 22px 24px 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1.5px solid #f0f0f0;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: #EB1C3C;
+      box-shadow: 0 6px 20px rgba(235,28,60,0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: #fde8ec;
+      color: #EB1C3C;
+    }
+
+    .card-meta {
+      font-size: 0.78rem;
+      color: #888;
+    }
+
+    .card-kpis {
+      display: flex;
+      gap: 20px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid #f5f5f5;
+    }
+    .kpi-item { display: flex; flex-direction: column; gap: 2px; }
+    .kpi-val  { font-size: 0.98rem; font-weight: 700; color: #1a1a2e; }
+    .kpi-lbl  { font-size: 0.65rem; color: #bbb; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: auto;
+      padding-top: 8px;
+      font-size: 0.78rem;
+      color: #EB1C3C;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .card:hover .card-footer { opacity: 1; }
+
+    /* ── Coming soon ── */
+    .card.coming-soon {
+      opacity: 0.5;
+      pointer-events: none;
+      border-style: dashed;
+      border-color: #e8e8e8;
+    }
+    .card.coming-soon .badge { background: #f5f5f5; color: #bbb; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.75rem;
+      color: #ccc;
+      border-top: 1px solid #ebebeb;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI2LjAuMiwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxMDExIDc2OCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTAxMSA3Njg7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDojRUIxQzNDO30KPC9zdHlsZT4KPGc+Cgk8Zz4KCQk8Zz4KCQkJPHBhdGggZD0iTTQ0NS42NCwzNDEuMTVoMjQuNjN2MTExLjk1aC0yNC42M1YzNDEuMTV6Ii8+CgkJCTxwYXRoIGQ9Ik00ODkuNDYsMzY3LjM3aDI0LjMxdjEyLjE1YzUuNi03LjIsMTIuOTUtMTMuNzUsMjUuMTEtMTMuNzVjMTguNTUsMCwyOS4xMSwxMS45OSwyOS4xMSwzMS44M3Y1NS40OWgtMjQuMzF2LTQ3LjgyCgkJCQljMC0xMS41MS01LjI4LTE3LjQzLTE0LjcxLTE3LjQzYy05LjQ0LDAtMTUuMTksNS45Mi0xNS4xOSwxNy40M3Y0Ny44MmgtMjQuMzFWMzY3LjM3eiIvPgoJCQk8cGF0aCBkPSJNNTc5LjAxLDQxMC4zOXYtMC4zMmMwLTI4LjYzLDE4LjcxLTQ0LjMsMzkuMDItNDQuM2MxMi45NSwwLDIwLjk1LDUuOTIsMjYuNzEsMTIuNzl2LTQyLjIyaDI0LjMxdjExNi43NWgtMjQuMzF2LTEyLjMxCgkJCQljLTUuOTIsOC4xNi0xMy45MSwxMy45MS0yNi43MSwxMy45MUM1OTguMDQsNDU0LjY5LDU3OS4wMSw0MzkuMDIsNTc5LjAxLDQxMC4zOXogTTY0NS4wNiw0MTAuMzl2LTAuMzIKCQkJCWMwLTE0LjIzLTkuNDQtMjMuNjctMjAuNzktMjMuNjdjLTExLjM1LDAtMjAuOTUsOS4yOC0yMC45NSwyMy42N3YwLjMyYzAsMTQuMjMsOS42LDIzLjY3LDIwLjk1LDIzLjY3CgkJCQlDNjM1LjYyLDQzNC4wNiw2NDUuMDYsNDI0LjYzLDY0NS4wNiw0MTAuMzl6Ii8+CgkJCTxwYXRoIGQ9Ik02ODAuMzksNDEwLjcxdi0wLjMyYzAtMjQuNDcsMTcuNDMtNDQuNjIsNDIuMzgtNDQuNjJjMjguNjMsMCw0MS43NCwyMi4yMyw0MS43NCw0Ni41NGMwLDEuOTItMC4xNiw0LTAuMzIsNi40aC01OS42NQoJCQkJYzIuNCwxMS4wNCwxMC4wOCwxNi43OSwyMC45NSwxNi43OWM4LjE2LDAsMTMuOTEtMi41NiwyMC43OS04LjhsMTMuOTEsMTIuMzFjLTguMTYsMTAuMDgtMTkuNTEsMTUuOTktMzUuMDIsMTUuOTkKCQkJCUM2OTkuNDIsNDU1LjAxLDY4MC4zOSw0MzYuOTQsNjgwLjM5LDQxMC43MXogTTc0MC44NCw0MDMuNTJjLTEuNDQtMTAuODgtNy44NC0xOC4yMy0xOC4wNy0xOC4yM3MtMTYuNjMsNy4yLTE4LjU1LDE4LjIzSDc0MC44NHoKCQkJCSIvPgoJCQk8cGF0aCBkPSJNODA3LjUzLDM5Mi40OGwxNi4xNS0yNS4xMWgyNS40M2wtMjguOTUsNDEuOWwzMC4yMyw0My44MmgtMjYuMDdsLTE3LjI3LTI2LjcxbC0xNy4yNywyNi43MWgtMjUuNDNsMzAuMDctNDMuNQoJCQkJbC0yOC45NS00Mi4yMmgyNi4wN0w4MDcuNTMsMzkyLjQ4eiIvPgoJCTwvZz4KCTwvZz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zODYuMDYsMzAwLjU2aC02My40M2MwLTMwLjY2LTI0Ljk0LTU1LjYtNTUuNi01NS42Yy0zMC42NiwwLTU1LjYsMjQuOTQtNTUuNiw1NS42SDE0OAoJCWMwLTMxLjgsMTIuMzgtNjEuNjksMzQuODYtODQuMTdzNTIuMzctMzQuODYsODQuMTctMzQuODZzNjEuNjksMTIuMzgsODQuMTcsMzQuODZDMzczLjY4LDIzOC44NywzODYuMDYsMjY4Ljc2LDM4Ni4wNiwzMDAuNTYiLz4KCTxwb2x5Z29uIHBvaW50cz0iMzg2LjAzLDM0MS4xNiAzMTEuNjUsMzQxLjE2IDI2Ny4wMiw0MDMuODMgMjIyLjM5LDM0MS4xNiAxNDgsMzQxLjE2IDIzMS40NCw0NTMuMSAxNDgsNTY1LjA0IDIyMi4zOSw1NjUuMDQgCgkJMjY3LjAyLDUwMi4zNiAzMTEuNjUsNTY1LjA0IDM4Ni4wMyw1NjUuMDQgMzAyLjYsNDUzLjEgCSIvPgoJPGc+CgkJPHBhdGggZD0iTTQ0Mi43NCw0ODUuOTNoNS44N2w3LjM3LDIyLjlsNy41OS0yMi45OWg0LjU5bDcuNTksMjIuOTlsNy4zNy0yMi45aDUuNjlsLTEwLjcyLDMxLjExaC00LjcybC03LjU5LTIyLjJsLTcuNTksMjIuMgoJCQloLTQuNzJMNDQyLjc0LDQ4NS45M3oiLz4KCQk8cGF0aCBkPSJNNTAxLjY5LDQ4NS45M2gyMi45djQuODVoLTE3LjQ4djguMDNoMTUuNDl2NC45aC0xNS40OXY4LjI1aDE3Ljd2NC44NmgtMjMuMTNWNDg1LjkzeiIvPgoJCTxwYXRoIGQ9Ik01NDkuNTEsNDg1LjcxaDUuMDNsMTMuNTksMzEuMTFoLTUuNzRsLTMuMTMtNy40NmgtMTQuNjFsLTMuMTgsNy40NmgtNS41Nkw1NDkuNTEsNDg1LjcxeiBNNTU3LjI4LDUwNC41NWwtNS4zNC0xMi4zNgoJCQlsLTUuMywxMi4zNkg1NTcuMjh6Ii8+CgkJPHBhdGggZD0iTTU4MC43NSw0ODUuOTNoNS40M3YyNS45NWgxNi4yNHY0Ljk0aC0yMS42N1Y0ODUuOTN6Ii8+CgkJPHBhdGggZD0iTTYxOC42LDQ5MC45NmgtOS44NHYtNS4wM2gyNS4xMXY1LjAzaC05Ljg0djI1Ljg2aC01LjQzVjQ5MC45NnoiLz4KCQk8cGF0aCBkPSJNNjQ2Ljg0LDQ4NS45M2g1LjQzdjEyLjg0SDY2N3YtMTIuODRoNS40M3YzMC44OUg2NjdWNTAzLjhoLTE0Ljc0djEzLjAyaC01LjQzVjQ4NS45M3oiLz4KCQk8cGF0aCBkPSJNNDQ1LjEzLDUzNS42NGg1Ljc4bDkuNCwxNC42MWw5LjQtMTQuNjFoNS43OHYzMC44OWgtNS40M3YtMjIuMTVsLTkuNzUsMTQuNTZoLTAuMThsLTkuNjctMTQuNDd2MjIuMDdoLTUuMzRWNTM1LjY0eiIvPgoJCTxwYXRoIGQ9Ik01MDEuNjksNTM1LjQyaDUuMDNsMTMuNTksMzEuMTFoLTUuNzRsLTMuMTMtNy40NmgtMTQuNjFsLTMuMTgsNy40NmgtNS41Nkw1MDEuNjksNTM1LjQyeiBNNTA5LjQ2LDU1NC4yN2wtNS4zNC0xMi4zNgoJCQlsLTUuMywxMi4zNkg1MDkuNDZ6Ii8+CgkJPHBhdGggZD0iTTUzMi45Miw1MzUuNjRoNS4wM0w1NTQuNSw1NTd2LTIxLjM2aDUuMzR2MzAuODloLTQuNTVsLTE3LjAzLTIxLjk4djIxLjk4aC01LjM0VjUzNS42NHoiLz4KCQk8cGF0aCBkPSJNNTg2LjA0LDUzNS40Mmg1LjAzbDEzLjU5LDMxLjExaC01Ljc0bC0zLjEzLTcuNDZoLTE0LjYxbC0zLjE4LDcuNDZoLTUuNTZMNTg2LjA0LDUzNS40MnogTTU5My44MSw1NTQuMjdsLTUuMzQtMTIuMzYKCQkJbC01LjMsMTIuMzZINTkzLjgxeiIvPgoJCTxwYXRoIGQ9Ik02MTMuOTcsNTUxLjE4di0wLjA5YzAtOC42NSw2LjU3LTE1Ljk4LDE1LjkzLTE1Ljk4YzUuMzQsMCw4LjY5LDEuNSwxMS44Nyw0LjE5bC0zLjQ0LDQuMQoJCQljLTIuMzgtMi4wMy00Ljc3LTMuMjYtOC42NS0zLjI2Yy01LjY1LDAtMTAuMDIsNC45NC0xMC4wMiwxMC44NnYwLjA5YzAsNi4zNSw0LjE5LDExLjAzLDEwLjUsMTEuMDNjMi45NiwwLDUuNTYtMC45Myw3LjQ2LTIuMzQKCQkJdi01Ljc0aC03Ljl2LTQuNzdoMTMuMTV2MTIuOTdjLTMuMDksMi42LTcuNDEsNC44MS0xMi44OSw0LjgxQzYyMC4zMiw1NjcuMDYsNjEzLjk3LDU2MC4xOCw2MTMuOTcsNTUxLjE4eiIvPgoJCTxwYXRoIGQ9Ik02NTcuMjUsNTM1LjY0aDIyLjl2NC44NWgtMTcuNDh2OC4wM2gxNS40OXY0LjloLTE1LjQ5djguMjVoMTcuN3Y0Ljg2aC0yMy4xM1Y1MzUuNjR6Ii8+CgkJPHBhdGggZD0iTTY5NC4xMyw1MzUuNjRoNS43OGw5LjQsMTQuNjFsOS40LTE0LjYxaDUuNzh2MzAuODloLTUuNDN2LTIyLjE1bC05Ljc1LDE0LjU2aC0wLjE4bC05LjY3LTE0LjQ3djIyLjA3aC01LjM0VjUzNS42NHoiLz4KCQk8cGF0aCBkPSJNNzM5Ljc1LDUzNS42NGgyMi45djQuODVoLTE3LjQ4djguMDNoMTUuNDl2NC45aC0xNS40OXY4LjI1aDE3Ljd2NC44NmgtMjMuMTNWNTM1LjY0eiIvPgoJCTxwYXRoIGQ9Ik03NzYuNjMsNTM1LjY0aDUuMDNMNzk4LjIxLDU1N3YtMjEuMzZoNS4zNHYzMC44OWgtNC41NWwtMTcuMDMtMjEuOTh2MjEuOThoLTUuMzRWNTM1LjY0eiIvPgoJCTxwYXRoIGQ9Ik04MjYuMzYsNTQwLjY3aC05Ljg0di01LjAzaDI1LjExdjUuMDNoLTkuODR2MjUuODZoLTUuNDNWNTQwLjY3eiIvPgoJPC9nPgo8L2c+Cjwvc3ZnPgo=" alt="Index Wealth Management" />
+  </div>
+  <div class="header-right">
+    <h2>Sales Analytics Reports</h2>
+    <p>All Projects · Updated April 2026</p>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Project Dashboard Hub</h1>
+  <p>Select a project below to view the full interactive sales analytics report.</p>
+</div>
+
+<main>
+
+  <!-- ═══ MARCH 2026 ═══ -->
+  <div class="period-group">
+    <div class="period-label">March 2026</div>
+    <div class="cards">
+
+      <a class="card" href="niabi-mar-2026.html">
+        <div class="card-header">
+          <span class="card-title">Niabi</span>
+          <span class="badge">March 2026</span>
+        </div>
+        <div class="card-meta">124 units &nbsp;·&nbsp; Tbilisi</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">$4.6M</span><span class="kpi-lbl">Contract</span></div>
+          <div class="kpi-item"><span class="kpi-val">63 / 124</span><span class="kpi-lbl">Units Sold</span></div>
+          <div class="kpi-item"><span class="kpi-val">45.6%</span><span class="kpi-lbl">Collected</span></div>
+        </div>
+        <div class="card-footer">View Report →</div>
+      </a>
+
+      <a class="card" href="isani-mar-2026.html">
+        <div class="card-header">
+          <span class="card-title">Isani</span>
+          <span class="badge">March 2026</span>
+        </div>
+        <div class="card-meta">209 units &nbsp;·&nbsp; Tbilisi</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">$2.1M</span><span class="kpi-lbl">Contract</span></div>
+          <div class="kpi-item"><span class="kpi-val">32 / 209</span><span class="kpi-lbl">Units Sold</span></div>
+          <div class="kpi-item"><span class="kpi-val">17.2%</span><span class="kpi-lbl">Collected</span></div>
+        </div>
+        <div class="card-footer">View Report →</div>
+      </a>
+
+      <a class="card" href="telavi-mar-2026.html">
+        <div class="card-header">
+          <span class="card-title">Telavi</span>
+          <span class="badge">March 2026</span>
+        </div>
+        <div class="card-meta">143 units &nbsp;·&nbsp; Telavi</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">$2.8M</span><span class="kpi-lbl">Contract</span></div>
+          <div class="kpi-item"><span class="kpi-val">65 / 143</span><span class="kpi-lbl">Units Sold</span></div>
+          <div class="kpi-item"><span class="kpi-val">19.0%</span><span class="kpi-lbl">Collected</span></div>
+        </div>
+        <div class="card-footer">View Report →</div>
+      </a>
+
+      <a class="card" href="bochorma-mar-2026.html">
+        <div class="card-header">
+          <span class="card-title">Bochorma</span>
+          <span class="badge">March 2026</span>
+        </div>
+        <div class="card-meta">495 units &nbsp;·&nbsp; Kakheti</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">$27.0M</span><span class="kpi-lbl">Contract</span></div>
+          <div class="kpi-item"><span class="kpi-val">331 / 495</span><span class="kpi-lbl">Units Sold</span></div>
+          <div class="kpi-item"><span class="kpi-val">33.8%</span><span class="kpi-lbl">Collected</span></div>
+        </div>
+        <div class="card-footer">View Report →</div>
+      </a>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Riverside</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Gldani</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Kindzmarauli</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  &copy; 2026 Index Wealth Management &nbsp;·&nbsp; All reports are confidential
+</footer>
+
+</body>
+</html>

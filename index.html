@@ -76,6 +76,34 @@
       border-bottom: 1px solid #e8e8e8;
     }
 
+    /* ── Collapsible past months ── */
+    details.period-group { padding: 0; }
+    details.period-group summary {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e8e8e8;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    details.period-group summary::-webkit-details-marker { display: none; }
+    details.period-group summary::after {
+      content: '▸';
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+    details[open].period-group summary::after {
+      transform: rotate(90deg);
+    }
+    details.period-group summary:hover { color: #EB1C3C; }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -188,9 +216,97 @@
 
 <main>
 
-  <!-- ═══ MARCH 2026 ═══ -->
+  <!-- ═══ APRIL 2026 ═══ -->
   <div class="period-group">
-    <div class="period-label">March 2026</div>
+    <div class="period-label">April 2026</div>
+    <div class="cards">
+
+      <a class="card" href="niabi-apr-2026.html">
+        <div class="card-header">
+          <span class="card-title">Niabi</span>
+          <span class="badge">April 2026</span>
+        </div>
+        <div class="card-meta">126 units &nbsp;·&nbsp; Tbilisi</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">$5.3M</span><span class="kpi-lbl">Contract</span></div>
+          <div class="kpi-item"><span class="kpi-val">67 / 126</span><span class="kpi-lbl">Units Sold</span></div>
+          <div class="kpi-item"><span class="kpi-val">42.4%</span><span class="kpi-lbl">Collected</span></div>
+        </div>
+        <div class="card-footer">View Report →</div>
+      </a>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Isani</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Telavi</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Bochorma</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Riverside</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Gldani</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+      <div class="card coming-soon">
+        <div class="card-header">
+          <span class="card-title">Kindzmarauli</span>
+          <span class="badge">Coming Soon</span>
+        </div>
+        <div class="card-meta">Data not yet uploaded</div>
+        <div class="card-kpis">
+          <div class="kpi-item"><span class="kpi-val">—</span><span class="kpi-lbl">Contract</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ MARCH 2026 ═══ -->
+  <details class="period-group">
+    <summary>March 2026</summary>
     <div class="cards">
 
       <a class="card" href="niabi-mar-2026.html">
@@ -283,7 +399,7 @@
       </div>
 
     </div>
-  </div>
+  </details>
 
 </main>
 

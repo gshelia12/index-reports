@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -117,7 +117,7 @@
       <h1>Isani — Sales Analytics Dashboard</h1>
       <div class="subtitle">Real Estate Development · Single Project Overview</div>
       <div class="subtitle">Data source: IsaniDataAnalysisApril.xlsx</div>
-      <div class="as-of">მონაცემები: 30 აპრილი, 2026</div>
+      <div class="as-of">Data as of: April 30, 2026</div>
     </div>
     <div class="logo-box" style="background:#fff; padding:4px;">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="140 208 720 368" width="100%" height="100%" xml:space="preserve">
@@ -163,105 +163,105 @@
   </div>
 
   <!-- KPI CARDS -->
-  <div class="section-label">ძირითადი მაჩვენებლები</div>
+  <div class="section-label">Key Metrics</div>
   <div class="kpi-grid">
     <div class="kpi-card">
-      <div class="kpi-label">სულ რეალიზაცია</div>
+      <div class="kpi-label">Total Contract</div>
       <div class="kpi-value" id="kpiContract">$2,461,281</div>
-      <div class="kpi-sub" id="kpiContractSub">39 გაყიდული ერთეული</div>
+      <div class="kpi-sub" id="kpiContractSub">39 units sold</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%"></div></div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">შემოსული თანხა</div>
+      <div class="kpi-label">Collected</div>
       <div class="kpi-value" id="kpiCollected">$454,845</div>
-      <div class="kpi-sub" id="kpiCollectedSub">კონტრაქტის 18.5%</div>
+      <div class="kpi-sub" id="kpiCollectedSub">18.5% of contract</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="barCollected" style="width:18.5%"></div></div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">მისაღები შემოსავალი</div>
+      <div class="kpi-label">Remaining Revenue</div>
       <div class="kpi-value" id="kpiRemaining">$2,006,436</div>
-      <div class="kpi-sub" id="kpiRemainingSub">კონტრაქტის 81.5%</div>
+      <div class="kpi-sub" id="kpiRemainingSub">81.5% of contract</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="barRemaining" style="width:81.5%"></div></div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">დაკონტრაქტებული</div>
+      <div class="kpi-label">Contracted</div>
       <div class="kpi-value" id="kpiUpcoming">$2,017,687</div>
-      <div class="kpi-sub" id="kpiUpcomingSub">მაი 2026 – იან 2028</div>
+      <div class="kpi-sub" id="kpiUpcomingSub">May 2026 – Jan 2028</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="barUpcoming" style="width:82.0%"></div></div>
     </div>
     <div class="kpi-card warn">
-      <div class="kpi-label">ვადაგადაცილება</div>
+      <div class="kpi-label">Overdue</div>
       <div class="kpi-value" id="kpiOverdue">$14,305</div>
-      <div class="kpi-sub" id="kpiOverdueSub">0.7% დარჩენილიდან</div>
+      <div class="kpi-sub" id="kpiOverdueSub">0.7% of remaining</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="barOverdue" style="width:0.7%;background:#f59e0b"></div></div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">გაყიდული (მ²)</div>
-      <div class="kpi-value" id="kpiSqm">2,255 მ²</div>
-      <div class="kpi-sub" id="kpiSqmSub">20.1% სულ 11,198 მ²-დან</div>
+      <div class="kpi-label">Sold (sqm)</div>
+      <div class="kpi-value" id="kpiSqm">2,255 sqm</div>
+      <div class="kpi-sub" id="kpiSqmSub">20.1% of total 11,198 sqm</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="barSqm" style="width:20.1%"></div></div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">დარჩენილი (მ²)</div>
-      <div class="kpi-value" id="kpiRemSqm">8,943 მ²</div>
-      <div class="kpi-sub" id="kpiRemSqmSub">79.9% სულ 11,198 მ²-დან</div>
+      <div class="kpi-label">Remaining (sqm)</div>
+      <div class="kpi-value" id="kpiRemSqm">8,943 sqm</div>
+      <div class="kpi-sub" id="kpiRemSqmSub">79.9% of total 11,198 sqm</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="barRemSqm" style="width:79.9%"></div></div>
     </div>
   </div>
 
   <!-- SALES DYNAMICS -->
-  <div class="section-label">გაყიდვების დინამიკა</div>
+  <div class="section-label">Sales Dynamics</div>
   <div class="charts-row">
     <div class="chart-card">
-      <div class="chart-title">ყოველთვიური გაყიდული ფართი (მ²)</div>
+      <div class="chart-title">Monthly Sold Area (sqm)</div>
       <div class="chart-wrap"><canvas id="chartMonthlySqm"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">ყოველთვიური გაყიდული ბინების ჯამური ფასი ($)</div>
+      <div class="chart-title">Monthly Total Apartment Sales Value ($)</div>
       <div class="chart-wrap"><canvas id="chartMonthlyPrice"></canvas></div>
     </div>
   </div>
 
   <!-- CASH FLOW CHARTS -->
-  <div class="section-label">ნაღდი ფულის ნაკადი — ისტორია</div>
+  <div class="section-label">Cash Flow — History</div>
   <div class="charts-row" style="grid-template-columns:1fr;">
     <div class="chart-card">
-      <div class="chart-title">ყოველთვიური შემოსავლები <span id="chartSalesMixSubtitle" style="display:none;">ახალი გაყიდვება vs გამეორებითი გადახდა</span></div>
+      <div class="chart-title">Monthly Revenue <span id="chartSalesMixSubtitle" style="display:none;">New sales vs recurring payments</span></div>
       <div class="chart-wrap"><canvas id="chartSalesMix"></canvas></div>
     </div>
   </div>
   <div class="charts-row">
     <div class="chart-card">
-      <div class="chart-title">კუმულატიური — დაკონტრაქტებული vs ფაქტი</div>
+      <div class="chart-title">Cumulative — Contracted vs Actual</div>
       <div class="chart-wrap short"><canvas id="chartCumulative"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">დაკონტრაქტებული vs ფაქტი</div>
+      <div class="chart-title">Contracted vs Actual</div>
       <div class="chart-wrap short"><canvas id="chartBudgetActual"></canvas></div>
     </div>
   </div>
 
   <!-- FUTURE CASH FLOW -->
-  <div class="section-label">მომავალი გადახდები</div>
+  <div class="section-label">Future Payments</div>
   <div class="charts-row" style="grid-template-columns:1fr;">
     <div class="chart-card">
-      <div class="chart-title">დაკონტრაქტებული შემოსავალი</div>
+      <div class="chart-title">Contracted Revenue</div>
       <div class="chart-wrap short"><canvas id="chartFuture"></canvas></div>
     </div>
   </div>
 
   <!-- OVERDUE AGING -->
-  <div class="section-label">ვადაგადაცილება — ასაკობრივი სტრუქტურა</div>
+  <div class="section-label">Overdue — Aging Structure</div>
   <div class="charts-row">
     <div class="chart-card">
-      <div class="chart-title">ვადაგადაცილება ასაკის მიხედვით <span>სულ $14,305 · 11 კლიენტი</span></div>
+      <div class="chart-title">Overdue by Age <span>Total $14,305 · 11 clients</span></div>
       <div class="chart-wrap" style="height:200px"><canvas id="chartAging"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">ყველაზე დიდი ვადაგადაცილება <span>(ტოპ 5)</span></div>
+      <div class="chart-title">Largest Overdue Balances <span>(Top 5)</span></div>
       <div style="overflow-x:auto;margin-top:4px">
         <table>
-          <thead><tr><th>კლიენტი</th><th>კონტრაქტი</th><th>გადახდილი</th><th>ვადაგ.</th></tr></thead>
+          <thead><tr><th>Client</th><th>Contract</th><th>Paid</th><th>Overdue</th></tr></thead>
           <tbody>
             <tr><td><strong>მაკა მჭედლიძე</strong></td><td class="td-money">$106,488</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:0.9%"></div></div><div class="progress-pct">0.9%</div></div></td><td class="td-money" style="color:#ED1A3B">$7,206</td></tr>
             <tr><td><strong>თემურ ტაბატაძე</strong></td><td class="td-money">$56,260</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:7.4%"></div></div><div class="progress-pct">7.4%</div></div></td><td class="td-money" style="color:#ED1A3B">$1,662</td></tr>
@@ -275,40 +275,40 @@
   </div>
 
   <!-- INVENTORY CHARTS (sqm) -->
-  <div class="section-label">ინვენტარი (მ² — პარკინგის გარეშე)</div>
+  <div class="section-label">Inventory (sqm — excl. parking)</div>
   <div class="charts-row">
     <div class="chart-card">
-      <div class="chart-title">სართულების მიხედვით — მ² <span>(გაყიდული vs გასაყიდი)</span></div>
+      <div class="chart-title">By Floor — sqm <span>(Sold vs Available)</span></div>
       <div class="chart-wrap tall"><canvas id="chartFloors"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">ტიპის მიხედვით — მ² <span>(გაყიდული vs გასაყიდი)</span></div>
+      <div class="chart-title">By Type — sqm <span>(Sold vs Available)</span></div>
       <div class="chart-wrap tall"><canvas id="chartTypes"></canvas></div>
     </div>
   </div>
 
   <!-- SALES PACE + PRICE TREND -->
-  <div class="section-label">გაყიდვების ტემპი & ფასის ტრენდი</div>
+  <div class="section-label">Sales Pace & Price Trend</div>
   <div class="charts-row">
     <div class="chart-card">
-      <div class="chart-title">გაყიდული ერთეულები / თვე <span>პროგნოზი ამჟამინდელი ტემპით: ~Aug 2028</span></div>
+      <div class="chart-title">Units Sold / Month <span>Forecast at current pace: ~Aug 2028</span></div>
       <div class="chart-wrap"><canvas id="chartPace"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-title">საშ. შეწონილი ფასი / მ² <span>(სასტუმრო ოთახი — ყოველი გაყიდვის თვე)</span></div>
+      <div class="chart-title">Avg. Weighted Price / sqm <span>(Apartment — each sale month)</span></div>
       <div class="chart-wrap"><canvas id="chartPrice"></canvas></div>
     </div>
   </div>
 
   <!-- CONCENTRATION TABLE -->
-  <div class="section-label">კლიენტების კონცენტრაცია — ტოპ 10 კონტრაქტის მიხედვით</div>
+  <div class="section-label">Client Concentration — Top 10 by Contract Value</div>
   <div class="table-card">
     <div class="table-header">
-      <h3>ტოპ 10 კლიენტი — კონტრაქტის ღირებულება</h3>
-      <span>Isani · 30 აპრილი 2026</span>
+      <h3>Top 10 Clients — Contract Value</h3>
+      <span>Isani · April 30, 2026</span>
     </div>
     <table>
-      <thead><tr><th>#</th><th>კლიენტი</th><th>მ²</th><th>კონტრაქტი</th><th>გადახდილი (%)</th><th>ვადაგ.</th></tr></thead>
+      <thead><tr><th>#</th><th>Client</th><th>sqm</th><th>Contract</th><th>Paid (%)</th><th>Overdue</th></tr></thead>
       <tbody>
         <tr><td class="td-num" style="color:#999">1</td><td><strong>მარიამი გლურჯიძე</strong></td><td class="td-num">98.6</td><td class="td-money">$109,446</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:8.0%"></div></div><div class="progress-pct">8.0%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
         <tr><td class="td-num" style="color:#999">2</td><td><strong>მაია გარაქლიდუ</strong></td><td class="td-num">98.6</td><td class="td-money">$107,967</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:11.1%"></div></div><div class="progress-pct">11.1%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
@@ -320,14 +320,14 @@
         <tr><td class="td-num" style="color:#999">8</td><td><strong>გიორგი მოსიძე</strong></td><td class="td-num">75.7</td><td class="td-money">$80,242</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:36.1%"></div></div><div class="progress-pct">36.1%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
         <tr><td class="td-num" style="color:#999">9</td><td><strong>მელანია გოგაძე</strong></td><td class="td-num">60.2</td><td class="td-money">$72,240</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:3.3%"></div></div><div class="progress-pct">3.3%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$786</td></tr>
         <tr><td class="td-num" style="color:#999">10</td><td><strong>ნაზიბროლა დარბუაშვილი</strong></td><td class="td-num">62.699999999999996</td><td class="td-money">$71,478</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:7.5%"></div></div><div class="progress-pct">7.5%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
-        <tr style="background:#fafafa;font-weight:700;"><td colspan="3" class="td-money">სულ ტოპ 10</td><td class="td-money">$933,084</td><td style="font-size:12px;color:#888;padding:13px 16px">კონტრაქტის 37.9%</td><td class="td-money" style="color:#ED1A3B">$8,948</td></tr>
+        <tr style="background:#fafafa;font-weight:700;"><td colspan="3" class="td-money">Total Top 10</td><td class="td-money">$933,084</td><td style="font-size:12px;color:#888;padding:13px 16px">37.9% of contract</td><td class="td-money" style="color:#ED1A3B">$8,948</td></tr>
       </tbody>
     </table>
   </div>
 
   <footer>
-    <span>Index Wealth Management · Isani Project · კონფიდენციალური</span>
-    <span>მონაცემების წყარო: IsaniDataAnalysisApril.xlsx · განახლდა: 30.04.2026</span>
+    <span>Index Wealth Management · Isani Project · Confidential</span>
+    <span>Data source: IsaniDataAnalysisApril.xlsx · Updated: 04.30.2026</span>
   </footer>
 </div>
 
@@ -355,12 +355,12 @@
     type: 'bar',
     data: {
       labels: MONTHLY_SALES.labels,
-      datasets: [{ label:'გაყიდული ფართი (მ²)', data: MONTHLY_SALES.sqm, backgroundColor: RED, borderRadius:3, borderSkipped:false }]
+      datasets: [{ label:'Sold Area (sqm)', data: MONTHLY_SALES.sqm, backgroundColor: RED, borderRadius:3, borderSkipped:false }]
     },
     options: {
       responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString('en-US')+' მ²'}}},
-      scales:{ y:{beginAtZero:true, ticks:{callback:v=>v.toLocaleString('en-US')+' მ²'}}, x:{ticks:{maxRotation:45,minRotation:45}} }
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString('en-US')+' sqm'}}},
+      scales:{ y:{beginAtZero:true, ticks:{callback:v=>v.toLocaleString('en-US')+' sqm'}}, x:{ticks:{maxRotation:45,minRotation:45}} }
     }
   });
 
@@ -369,7 +369,7 @@
     data: {
       labels: MONTHLY_SALES.labels,
       datasets: [{
-        label:'ჯამური ფასი ($)', data: MONTHLY_SALES.price,
+        label:'Total Price ($)', data: MONTHLY_SALES.price,
         borderColor: RED, backgroundColor:'rgba(237,26,59,0.08)',
         borderWidth:2, tension:0.25, fill:true,
         pointRadius:5, pointHoverRadius:7, pointBackgroundColor:'#fff', pointBorderColor:RED, pointBorderWidth:2
@@ -388,8 +388,8 @@
     data:{
       labels:[],
       datasets:[
-        {label:'ბიუჯეტი (Debitors)', backgroundColor:LGREY, borderRadius:2, borderSkipped:false, data:[]},
-        {label:'ფაქტი (ActualPayments)', backgroundColor:RED,   borderRadius:2, borderSkipped:false, data:[]}
+        {label:'Budget (Debitors)', backgroundColor:LGREY, borderRadius:2, borderSkipped:false, data:[]},
+        {label:'Actual (Payments)', backgroundColor:RED,   borderRadius:2, borderSkipped:false, data:[]}
       ]
     },
     options:{
@@ -409,7 +409,7 @@
   const chartFuture = new Chart(document.getElementById('chartFuture'), {
     type:'line',
     data:{ labels:[], datasets:[{
-      label:'დაგეგმილი ($)',
+      label:'Scheduled ($)',
       data:[],
       borderColor:RED,
       backgroundColor:'rgba(237,26,59,0.10)',
@@ -437,21 +437,21 @@
       labels:[],
       datasets:[
         {
-          label:'ახალი გაყიდვება',
+          label:'New Sales',
           data:[], fill:'origin', stack:'breakdown',
           borderColor:RED, backgroundColor:'rgba(237,26,59,0.25)',
           borderWidth:1.5, tension:0, pointRadius:0, pointHoverRadius:4,
           pointBackgroundColor:RED, hidden:true
         },
         {
-          label:'გამეორებითი გადახდა',
+          label:'Recurring Payments',
           data:[], fill:'-1', stack:'breakdown',
           borderColor:GREY, backgroundColor:'rgba(65,64,66,0.12)',
           borderWidth:1.5, tension:0, pointRadius:0, pointHoverRadius:4,
           pointBackgroundColor:GREY, hidden:true
         },
         {
-          label:'სულ შემოსავალი',
+          label:'Total Revenue',
           data:[], fill:'origin', stack:'total',
           borderColor:RED, backgroundColor:'rgba(237,26,59,0.10)',
           borderWidth:2.5, tension:0,
@@ -483,10 +483,10 @@
   new Chart(document.getElementById('chartFloors'), {
     type:'bar',
     data:{
-      labels:["სართ. 0", "სართ. 1", "სართ. 2", "სართ. 3", "სართ. 4", "სართ. 5", "სართ. 6", "სართ. 7", "სართ. 8", "სართ. 9", "სართ. 10"],
+      labels:["Floor 0", "Floor 1", "Floor 2", "Floor 3", "Floor 4", "Floor 5", "Floor 6", "Floor 7", "Floor 8", "Floor 9", "Floor 10"],
       datasets:[
-        {label:'გაყიდული',  data:[0, 153.6, 447.2, 444.6, 386.2, 324.1, 158.8, 60.2, 159.2, 60.1, 0],   backgroundColor:RED,   borderRadius:2,borderSkipped:false},
-        {label:'გასაყიდი',  data:[465.3, 791.3, 505.7, 542.4, 591.7, 671.5, 819.1, 917.7, 820.4, 919.3, 979.6], backgroundColor:LGREY, borderRadius:2,borderSkipped:false}
+        {label:'Sold',  data:[0, 153.6, 447.2, 444.6, 386.2, 324.1, 158.8, 60.2, 159.2, 60.1, 0],   backgroundColor:RED,   borderRadius:2,borderSkipped:false},
+        {label:'Available',  data:[465.3, 791.3, 505.7, 542.4, 591.7, 671.5, 819.1, 917.7, 820.4, 919.3, 979.6], backgroundColor:LGREY, borderRadius:2,borderSkipped:false}
       ]
     },
     options:{
@@ -502,10 +502,10 @@
   new Chart(document.getElementById('chartTypes'), {
     type:'bar',
     data:{
-      labels:["ბინა", "კომერციული"],
+      labels:["Apartment", "Commercial"],
       datasets:[
-        {label:'გაყიდული',  data:[2194.0, 0],   backgroundColor:RED,   borderRadius:2,borderSkipped:false},
-        {label:'გასაყიდი',  data:[7558.7, 465.3], backgroundColor:LGREY, borderRadius:2,borderSkipped:false}
+        {label:'Sold',  data:[2194.0, 0],   backgroundColor:RED,   borderRadius:2,borderSkipped:false},
+        {label:'Available',  data:[7558.7, 465.3], backgroundColor:LGREY, borderRadius:2,borderSkipped:false}
       ]
     },
     options:{
@@ -524,8 +524,8 @@
     data:{
       labels:[],
       datasets:[
-        {label:'გრაფიკი (კუმ.)', data:[], borderColor:LGREY, backgroundColor:'rgba(192,192,192,0.08)', borderWidth:2, borderDash:[5,3], pointRadius:3, pointBackgroundColor:LGREY, fill:false, tension:0},
-        {label:'ფაქტი (კუმ.)',   data:[], borderColor:RED,   backgroundColor:'rgba(237,26,59,0.08)',   borderWidth:2.5, pointRadius:4, pointBackgroundColor:RED, fill:true, tension:0}
+        {label:'Schedule (cum.)', data:[], borderColor:LGREY, backgroundColor:'rgba(192,192,192,0.08)', borderWidth:2, borderDash:[5,3], pointRadius:3, pointBackgroundColor:LGREY, fill:false, tension:0},
+        {label:'Actual (cum.)',   data:[], borderColor:RED,   backgroundColor:'rgba(237,26,59,0.08)',   borderWidth:2.5, pointRadius:4, pointBackgroundColor:RED, fill:true, tension:0}
       ]
     },
     options:{
@@ -547,8 +547,8 @@
     data:{
       labels: PACE_DATA.labels,
       datasets:[
-        {type:'bar',  label:'გაყიდული ერთეული', data:PACE_DATA.units, backgroundColor:RED, borderRadius:3, borderSkipped:false},
-        {type:'line', label:'საშ. ტემპი (4.4/თვე)', data:Array(PACE_DATA.labels.length).fill(PACE_DATA.avg),
+        {type:'bar',  label:'Units Sold', data:PACE_DATA.units, backgroundColor:RED, borderRadius:3, borderSkipped:false},
+        {type:'line', label:'Avg. Pace (4.4/mo)', data:Array(PACE_DATA.labels.length).fill(PACE_DATA.avg),
           borderColor:LGREY, borderWidth:1.5, borderDash:[5,3], pointRadius:0, fill:false, tension:0}
       ]
     },
@@ -556,7 +556,7 @@
       responsive:true, maintainAspectRatio:false,
       plugins:{
         legend:{display:true, position:'top', labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}},
-        tooltip:{callbacks:{label:c=> c.dataset.type==='line' ? null : ' '+c.parsed.y+' ერთეული'}}
+        tooltip:{callbacks:{label:c=> c.dataset.type==='line' ? null : ' '+c.parsed.y+' units'}}
       },
       scales:{
         x:{ grid:{display:false}, ticks:{...T,maxRotation:45,minRotation:45} },
@@ -571,7 +571,7 @@
     data:{
       labels: PRICE_DATA.labels,
       datasets:[{
-        label:'$/მ² (შეწ.)', data:PRICE_DATA.values,
+        label:'$/sqm (wtd.)', data:PRICE_DATA.values,
         borderColor:RED, backgroundColor:'rgba(237,26,59,0.08)',
         borderWidth:2.5, pointRadius:5, pointHoverRadius:7,
         pointBackgroundColor:RED, fill:true, tension:0.3
@@ -581,7 +581,7 @@
       responsive:true, maintainAspectRatio:false,
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{label:c=>' $'+c.parsed.y.toLocaleString('en-US')+'/მ²'}}
+        tooltip:{callbacks:{label:c=>' $'+c.parsed.y.toLocaleString('en-US')+'/sqm'}}
       },
       scales:{
         x:{ grid:{display:false}, ticks:{...T,maxRotation:45,minRotation:45} },
@@ -594,7 +594,7 @@
   new Chart(document.getElementById('chartAging'), {
     type:'doughnut',
     data:{
-      labels:['0–30 დღე: $'+AGING.d30.toLocaleString('en-US'), '31–90 დღე: $'+AGING.d90.toLocaleString('en-US'), '90+ დღე: $'+AGING.d90p.toLocaleString('en-US')],
+      labels:['0–30 days: $'+AGING.d30.toLocaleString('en-US'), '31–90 days: $'+AGING.d90.toLocaleString('en-US'), '90+ days: $'+AGING.d90p.toLocaleString('en-US')],
       datasets:[{
         data:[AGING.d30, AGING.d90, AGING.d90p],
         backgroundColor:['#4ade80','#f59e0b','#ED1A3B'],
@@ -674,34 +674,34 @@
     const unitPct = kpi.totalU  > 0 ? (kpi.soldU    / kpi.totalU    * 100) : 0;
 
     document.getElementById('kpiContract').textContent   = fmtUSD(kpi.contract);
-    document.getElementById('kpiContractSub').textContent= kpi.soldU + ' გაყიდული ერთეული';
+    document.getElementById('kpiContractSub').textContent= kpi.soldU + ' units sold';
 
     document.getElementById('kpiCollected').textContent  = fmtUSD(kpi.collected);
-    document.getElementById('kpiCollectedSub').textContent = kpi.contract > 0 ? 'კონტრაქტის '+collPct.toFixed(1)+'%' : '—';
+    document.getElementById('kpiCollectedSub').textContent = kpi.contract > 0 ? 'Contract '+collPct.toFixed(1)+'%' : '—';
     document.getElementById('barCollected').style.width  = collPct.toFixed(1) + '%';
 
     document.getElementById('kpiRemaining').textContent  = fmtUSD(kpi.remaining);
-    document.getElementById('kpiRemainingSub').textContent= kpi.contract > 0 ? 'კონტრაქტის '+remPct.toFixed(1)+'%' : '—';
+    document.getElementById('kpiRemainingSub').textContent= kpi.contract > 0 ? 'Contract '+remPct.toFixed(1)+'%' : '—';
     document.getElementById('barRemaining').style.width  = remPct.toFixed(1) + '%';
 
     const remSqm    = kpi.isPark ? null : (kpi.totalSqm - kpi.soldSqm);
     const remSqmPct = kpi.totalSqm > 0 ? (remSqm / kpi.totalSqm * 100) : 0;
-    document.getElementById('kpiRemSqm').textContent    = kpi.isPark ? '—' : fmtNum(Math.round(remSqm)) + ' მ²';
-    document.getElementById('kpiRemSqmSub').textContent = kpi.isPark ? 'პარკინგი — ფართი არ ვრცელდება' : remSqmPct.toFixed(1) + '% სულ ' + fmtNum(kpi.totalSqm) + ' მ²-დან';
+    document.getElementById('kpiRemSqm').textContent    = kpi.isPark ? '—' : fmtNum(Math.round(remSqm)) + ' sqm';
+    document.getElementById('kpiRemSqmSub').textContent = kpi.isPark ? 'Parking — sqm not applicable' : remSqmPct.toFixed(1) + '% of total ' + fmtNum(kpi.totalSqm) + ' sqm';
     document.getElementById('barRemSqm').style.width    = kpi.isPark ? '0%' : remSqmPct.toFixed(1) + '%';
 
     // SQM KPI — hide for parking
     if (kpi.isPark) {
       document.getElementById('kpiSqm').textContent    = '—';
-      document.getElementById('kpiSqmSub').textContent = 'პარკინგი: არ ვრ. მ²';
+      document.getElementById('kpiSqmSub').textContent = 'Parking: N/A sqm';
       document.getElementById('barSqm').style.width    = '0%';
     } else if (kpi.totalSqm === 0) {
-      document.getElementById('kpiSqm').textContent    = '0 მ²';
-      document.getElementById('kpiSqmSub').textContent = '0% გაყიდული';
+      document.getElementById('kpiSqm').textContent    = '0 sqm';
+      document.getElementById('kpiSqmSub').textContent = '0% sold';
       document.getElementById('barSqm').style.width    = '0%';
     } else {
-      document.getElementById('kpiSqm').textContent    = Math.round(kpi.soldSqm).toLocaleString('en-US') + ' მ²';
-      document.getElementById('kpiSqmSub').textContent = kpi.sqmPct + '% · სულ ' + Math.round(kpi.totalSqm).toLocaleString('en-US') + ' მ²';
+      document.getElementById('kpiSqm').textContent    = Math.round(kpi.soldSqm).toLocaleString('en-US') + ' sqm';
+      document.getElementById('kpiSqmSub').textContent = kpi.sqmPct + '% · total ' + Math.round(kpi.totalSqm).toLocaleString('en-US') + ' sqm';
       document.getElementById('barSqm').style.width    = kpi.sqmPct + '%';
     }
 
@@ -711,7 +711,7 @@
     document.getElementById('kpiUpcoming').textContent  = fmtUSD(upcoming);
     document.getElementById('kpiUpcomingSub').textContent = upMonths.length > 0
       ? upMonths[0].label + ' – ' + upMonths[upMonths.length-1].label
-      : 'დაგეგმილი გადახდა არ არის';
+      : 'No scheduled payments';
     document.getElementById('barUpcoming').style.width  = upcoming > 0
       ? Math.min(upcoming / (kpi.contract||1) * 100, 100).toFixed(1) + '%' : '0%';
 
@@ -719,8 +719,8 @@
     const overduePct = kpi.remaining > 0 ? (kpi.overdue / kpi.remaining * 100) : 0;
     document.getElementById('kpiOverdue').textContent    = kpi.overdue > 0 ? fmtUSD(kpi.overdue) : '—';
     document.getElementById('kpiOverdueSub').textContent = kpi.overdue > 0
-      ? overduePct.toFixed(1) + '% დარჩენილიდან'
-      : 'ვადაგადაცილება არ არის';
+      ? overduePct.toFixed(1) + '% of remaining'
+      : 'No overdue payments';
     document.getElementById('barOverdue').style.width    = overduePct.toFixed(1) + '%';
   }
 

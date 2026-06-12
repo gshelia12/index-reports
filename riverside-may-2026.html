@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riverside — Sales Analytics Dashboard — May 2026</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Roboto',sans-serif; background:#f0f0f0; padding:24px; min-height:100vh; color:#414042; }
+    .dashboard-container { max-width:1400px; margin:0 auto; background:#fff; box-shadow:0 8px 32px rgba(0,0,0,0.08); padding:40px; }
+    .header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #ED1A3B; padding-bottom:28px; margin-bottom:32px; }
+    .header-left h1 { font-size:30px; font-weight:700; color:#414042; letter-spacing:-0.5px; }
+    .header-left .subtitle { font-size:13px; color:#888; font-weight:500; margin-top:6px; }
+    .header-left .as-of { font-size:12px; color:#ED1A3B; font-weight:600; margin-top:4px; text-transform:uppercase; letter-spacing:0.4px; }
+    .header-left .exclusion { font-size:11px; color:#999; margin-top:4px; font-style:italic; }
+    .logo-box { width:120px; height:76px; background:#fff; border:1px solid #e0e0e0; display:flex; align-items:center; justify-content:center; padding:4px; border-radius:2px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:14px; margin-bottom:32px; }
+    .kpi-card { padding:20px 16px; border:1px solid #ebebeb; border-top:3px solid #ED1A3B; background:#fff; position:relative; transition:background .18s ease, border-top-color .18s ease; cursor:default; }
+    .kpi-card:hover { background:#ED1A3B; border-top-color:#c0001f; }
+    .kpi-card:hover .kpi-label { color:rgba(255,255,255,.75); }
+    .kpi-card:hover .kpi-value { color:#fff; }
+    .kpi-card:hover .kpi-sub { color:rgba(255,255,255,.7); }
+    .kpi-card:hover .kpi-bar { background:rgba(255,255,255,.3); }
+    .kpi-card:hover .kpi-bar-fill { background:rgba(255,255,255,.9); }
+    .kpi-card.warn { border-top-color:#f59e0b; }
+    .kpi-card.warn .kpi-bar-fill { background:#f59e0b; }
+    .kpi-card.warn:hover { background:#f59e0b !important; border-top-color:#d97706 !important; }
+    .kpi-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#999; margin-bottom:10px; }
+    .kpi-value { font-size:23px; font-weight:700; color:#414042; line-height:1; }
+    .kpi-sub { font-size:11px; color:#aaa; margin-top:6px; font-weight:500; }
+    .kpi-bar { height:4px; background:#f0f0f0; margin-top:12px; }
+    .kpi-bar-fill { height:4px; background:#ED1A3B; }
+    .section-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#ED1A3B; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-label::after { content:''; flex:1; height:1px; background:#ebebeb; }
+    .charts-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+    .chart-card { border:1px solid #ebebeb; padding:22px; background:#fff; }
+    .chart-title { font-size:13px; font-weight:700; color:#414042; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid #f0f0f0; }
+    .chart-title span { font-size:11px; font-weight:500; color:#999; margin-left:8px; }
+    .chart-wrap { position:relative; height:260px; }
+    .chart-wrap.tall { height:300px; }
+    .chart-wrap.short { height:220px; }
+    .table-card { border:1px solid #ebebeb; margin-top:20px; }
+    .table-header { padding:16px 20px; background:#414042; display:flex; justify-content:space-between; align-items:center; }
+    .table-header h3 { font-size:13px; font-weight:700; color:#fff; }
+    .table-header span { font-size:11px; color:rgba(255,255,255,.6); }
+    table { width:100%; border-collapse:collapse; }
+    thead tr { background:#f8f8f8; }
+    th { padding:11px 16px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#888; border-bottom:2px solid #ebebeb; }
+    td { padding:13px 16px; font-size:13px; color:#414042; border-bottom:1px solid #f4f4f4; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:#fafafa; }
+    .td-num { text-align:right; font-weight:600; font-variant-numeric:tabular-nums; }
+    .td-money { text-align:right; font-weight:600; }
+    .progress-wrap { display:flex; align-items:center; gap:8px; }
+    .progress-bar { flex:1; height:6px; background:#f0f0f0; }
+    .progress-fill { height:6px; background:#ED1A3B; }
+    .progress-pct { font-size:11px; font-weight:700; color:#ED1A3B; min-width:36px; }
+    .block-badge { display:inline-block; padding:2px 8px; background:#ED1A3B; color:#fff; font-size:10px; font-weight:700; border-radius:2px; margin-left:4px; }
+    footer { margin-top:36px; padding-top:18px; border-top:1px solid #ebebeb; display:flex; justify-content:space-between; font-size:11px; color:#bbb; }
+    @media (max-width:1400px) { .kpi-grid { grid-template-columns:repeat(4,1fr); } }
+    @media (max-width:900px)  { .charts-row { grid-template-columns:1fr; } .kpi-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:600px)  { body { padding:12px; } .dashboard-container { padding:20px; } }
+  </style>
+</head>
+<body>
+<div class="dashboard-container">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Riverside — Sales Analytics Dashboard</h1>
+      <div class="subtitle">Real Estate Development · Two-Block Project (A &amp; B)</div>
+      <div class="subtitle">Data source: RiversideDataAnalysis.xlsx</div>
+      <div class="as-of">AS OF: 31 MAY 2026</div>
+      <div class="exclusion">* გადასაცემი ერთეულები (16 ბინა / 1,228.7 მ²) გამორიცხულია ფინანსური გამოთვლებიდან</div>
+      <div class="exclusion">* დაჯავშნილი ერთეულები (19 ბინა / 1,623.2 მ²) გამორიცხულია ფინანსური გამოთვლებიდან</div>
+    </div>
+    <div class="logo-box">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="140 208 720 368" width="100%" height="100%" xml:space="preserve">
+        <style>.st0{fill:#EB1C3C;}</style>
+        <g>
+          <g><g>
+            <path d="M445.64,341.15h24.63v111.95h-24.63V341.15z"/>
+            <path d="M489.46,367.37h24.31v12.15c5.6-7.2,12.95-13.75,25.11-13.75c18.55,0,29.11,11.99,29.11,31.83v55.49h-24.31v-47.82c0-11.51-5.28-17.43-14.71-17.43c-9.44,0-15.19,5.92-15.19,17.43v47.82h-24.31V367.37z"/>
+            <path d="M579.01,410.39v-0.32c0-28.63,18.71-44.3,39.02-44.3c12.95,0,20.95,5.92,26.71,12.79v-42.22h24.31v116.75h-24.31v-12.31c-5.92,8.16-13.91,13.91-26.71,13.91C598.04,454.69,579.01,439.02,579.01,410.39z M645.06,410.39v-0.32c0-14.23-9.44-23.67-20.79-23.67c-11.35,0-20.95,9.28-20.95,23.67v0.32c0,14.23,9.6,23.67,20.95,23.67C635.62,434.06,645.06,424.63,645.06,410.39z"/>
+            <path d="M680.39,410.71v-0.32c0-24.47,17.43-44.62,42.38-44.62c28.63,0,41.74,22.23,41.74,46.54c0,1.92-0.16,4-0.32,6.4h-59.65c2.4,11.04,10.08,16.79,20.95,16.79c8.16,0,13.91-2.56,20.79-8.8l13.91,12.31c-8.16,10.08-19.51,15.99-35.02,15.99C699.42,455.01,680.39,436.94,680.39,410.71z M740.84,403.52c-1.44-10.88-7.84-18.23-18.07-18.23s-16.63,7.2-18.55,18.23H740.84z"/>
+            <path d="M807.53,392.48l16.15-25.11h25.43l-28.95,41.9l30.23,43.82h-26.07l-17.27-26.71l-17.27,26.71h-25.43l30.07-43.5l-28.95-42.22h26.07L807.53,392.48z"/>
+          </g></g>
+          <path class="st0" d="M386.06,300.56h-63.43c0-30.66-24.94-55.6-55.6-55.6c-30.66,0-55.6,24.94-55.6,55.6H148c0-31.8,12.38-61.69,34.86-84.17s52.37-34.86,84.17-34.86s61.69,12.38,84.17,34.86C373.68,238.87,386.06,268.76,386.06,300.56"/>
+          <polygon points="386.03,341.16 311.65,341.16 267.02,403.83 222.39,341.16 148,341.16 231.44,453.1 148,565.04 222.39,565.04 267.02,502.36 311.65,565.04 386.03,565.04 302.6,453.1"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="section-label">ძირითადი მაჩვენებლები</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">სულ რეალიზაცია</div>
+      <div class="kpi-value">$4,552,346</div>
+      <div class="kpi-sub">44 / 70</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">შემოსული თანხა</div>
+      <div class="kpi-value">$3,183,374</div>
+      <div class="kpi-sub">კონტრაქტის 69.9%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:69.9%"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">მისაღები შემოსავალი</div>
+      <div class="kpi-value">$1,368,972</div>
+      <div class="kpi-sub">კონტრაქტის 30.1%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:30.1%"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">დაკონტრაქტებული</div>
+      <div class="kpi-value">$855,497</div>
+      <div class="kpi-sub">Jun 2026 – May 2030</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:62.5%"></div></div>
+    </div>
+    <div class="kpi-card warn">
+      <div class="kpi-label">ვადაგადაცილება</div>
+      <div class="kpi-value">$762,040</div>
+      <div class="kpi-sub">55.7% დარჩენილიდან</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:55.7%;background:#f59e0b"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">გაყიდული (მ²)</div>
+      <div class="kpi-value">3,320 მ²</div>
+      <div class="kpi-sub">60.6% · სულ 5,480 მ²</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:60.6%"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">დარჩენილი (მ²)</div>
+      <div class="kpi-value">2,160 მ²</div>
+      <div class="kpi-sub">39.4% სულ 5,480 მ²-დან</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:39.4%"></div></div>
+    </div>
+  </div>
+
+  <div class="section-label">გაყიდვების დინამიკა</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">გაყიდული ფართი თვეების მიხედვით (მ²)</div>
+      <div class="chart-wrap short"><canvas id="chartSalesSqm"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">გაყიდვების ღირებულება თვეების მიხედვით ($)</div>
+      <div class="chart-wrap short"><canvas id="chartSalesValue"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">ნაღდი ფულის ნაკადი — ისტორია</div>
+  <div class="charts-row" style="grid-template-columns:1fr;">
+    <div class="chart-card">
+      <div class="chart-title">ყოველთვიური შემოსავლები</div>
+      <div class="chart-wrap"><canvas id="chartSalesMix"></canvas></div>
+    </div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">კუმულატიური — დაკონტრაქტებული vs ფაქტი</div>
+      <div class="chart-wrap short"><canvas id="chartCumulative"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">დაკონტრაქტებული vs ფაქტი</div>
+      <div class="chart-wrap short"><canvas id="chartBudgetActual"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">მომავალი გადახდები</div>
+  <div class="charts-row" style="grid-template-columns:1fr;">
+    <div class="chart-card">
+      <div class="chart-title">დაკონტრაქტებული შემოსავალი</div>
+      <div class="chart-wrap short"><canvas id="chartFuture"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">ვადაგადაცილება — ასაკობრივი სტრუქტურა</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">ვადაგადაცილება ასაკის მიხედვით <span>სულ $770,556 · 23 კლიენტი</span></div>
+      <div class="chart-wrap" style="height:200px"><canvas id="chartAging"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">ყველაზე დიდი ვადაგადაცილება <span>(ტოპ 5)</span></div>
+      <div style="overflow-x:auto;margin-top:4px">
+        <table>
+          <thead><tr><th>კლიენტი</th><th>კონტრაქტი</th><th>გადახდილი</th><th>ვადაგ.</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ფარნაზ ბეჰმანზადეჰ</strong></td><td class="td-money">$184,350</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:20.0%"></div></div><div class="progress-pct">20.0%</div></div></td><td class="td-money" style="color:#ED1A3B">$147,480</td></tr>
+            <tr><td><strong>მარიამ ლომიძე</strong></td><td class="td-money">$112,080</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:8.9%"></div></div><div class="progress-pct">8.9%</div></div></td><td class="td-money" style="color:#ED1A3B">$102,082</td></tr>
+            <tr><td><strong>ირაკლი შანავა</strong></td><td class="td-money">$170,000</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:51.8%"></div></div><div class="progress-pct">51.8%</div></div></td><td class="td-money" style="color:#ED1A3B">$81,999</td></tr>
+            <tr><td><strong>შოთა მარუაშვილი</strong></td><td class="td-money">$79,560</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:7.5%"></div></div><div class="progress-pct">7.5%</div></div></td><td class="td-money" style="color:#ED1A3B">$73,560</td></tr>
+            <tr><td><strong>გიორგი ჯღარკავა</strong></td><td class="td-money">$86,620</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:26.6%"></div></div><div class="progress-pct">26.6%</div></div></td><td class="td-money" style="color:#ED1A3B">$63,617</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">ბლოკების შედარება — ა vs ბ</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">ბლოკები — მ² სტატუსის მიხედვით <span>(მხოლოდ ბინები)</span></div>
+      <div class="chart-wrap tall"><canvas id="chartBlocks"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">ბლოკები — რეალიზაცია ($) <span>(გადასაცემი გამორიცხული)</span></div>
+      <div class="chart-wrap tall"><canvas id="chartBlocksValue"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">ინვენტარი (მ² — პარკინგის გარეშე)</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">სართულების მიხედვით — მ²</div>
+      <div class="chart-wrap tall"><canvas id="chartFloors"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">ტიპის მიხედვით — მ²</div>
+      <div class="chart-wrap tall"><canvas id="chartTypes"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">სართულების დეტალიზაცია — ბლოკის მიხედვით</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">ბლოკი ა — სართულები (მ²) <span class="block-badge">A</span></div>
+      <div class="chart-wrap tall"><canvas id="chartFloorsA"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">ბლოკი ბ — სართულები (მ²) <span class="block-badge">B</span></div>
+      <div class="chart-wrap tall"><canvas id="chartFloorsB"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">გაყიდვების ტემპი &amp; ფასის ტრენდი</div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">გაყიდული ერთეულები / თვე <span>საშ. ტემპი: ~1.7/თვე</span></div>
+      <div class="chart-wrap"><canvas id="chartPace"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">საშ. შეწონილი ფასი / მ² <span>(ბინა — ყოველი გაყიდვის თვე)</span></div>
+      <div class="chart-wrap"><canvas id="chartPrice"></canvas></div>
+    </div>
+  </div>
+
+  <div class="section-label">კლიენტების კონცენტრაცია — ტოპ 10 კონტრაქტის მიხედვით</div>
+  <div class="table-card">
+    <div class="table-header">
+      <h3>ტოპ 10 კლიენტი — კონტრაქტის ღირებულება</h3>
+      <span>Riverside · 31 მარტი 2026</span>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>კლიენტი</th><th>მ²</th><th>კონტრაქტი</th><th>გადახდილი (%)</th><th>ვადაგ.</th></tr></thead>
+      <tbody>
+        <tr><td class="td-num" style="color:#999">1</td><td><strong>ნინო ჩხეიძე</strong></td><td class="td-num">182.5</td><td class="td-money">$269,820</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:100.0%"></div></div><div class="progress-pct">100.0%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
+        <tr><td class="td-num" style="color:#999">2</td><td><strong>ფარნაზ ბეჰმანზადეჰ</strong></td><td class="td-num">126.2</td><td class="td-money">$184,350</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:20.0%"></div></div><div class="progress-pct">20.0%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$147,480</td></tr>
+        <tr><td class="td-num" style="color:#999">3</td><td><strong>რუსუდან ჩხეიძე</strong></td><td class="td-num">133.2</td><td class="td-money">$184,020</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:100.0%"></div></div><div class="progress-pct">100.0%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
+        <tr><td class="td-num" style="color:#999">4</td><td><strong>ნელი წერეთელი</strong></td><td class="td-num">134.1</td><td class="td-money">$172,969</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:100.0%"></div></div><div class="progress-pct">100.0%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
+        <tr><td class="td-num" style="color:#999">5</td><td><strong>ირაკლი შანავა</strong></td><td class="td-num">118.2</td><td class="td-money">$170,000</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:51.8%"></div></div><div class="progress-pct">51.8%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$81,999</td></tr>
+        <tr><td class="td-num" style="color:#999">6</td><td><strong>ნინო ჯოხაძე</strong></td><td class="td-num">104.1</td><td class="td-money">$169,630</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:28.9%"></div></div><div class="progress-pct">28.9%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$31,835</td></tr>
+        <tr><td class="td-num" style="color:#999">7</td><td><strong>შოთა მარუაშვილი</strong></td><td class="td-num">121.5</td><td class="td-money">$157,950</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:19.6%"></div></div><div class="progress-pct">19.6%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$127,042</td></tr>
+        <tr><td class="td-num" style="color:#999">8</td><td><strong>თამარი შენგელია</strong></td><td class="td-num">91.2</td><td class="td-money">$141,435</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:17.7%"></div></div><div class="progress-pct">17.7%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$968</td></tr>
+        <tr><td class="td-num" style="color:#999">9</td><td><strong>ირინე ოდიშარია</strong></td><td class="td-num">91.5</td><td class="td-money">$136,950</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:100.0%"></div></div><div class="progress-pct">100.0%</div></div></td><td class="td-money" style="color:#ED1A3B;font-weight:700">$9,000</td></tr>
+        <tr><td class="td-num" style="color:#999">10</td><td><strong>გერნიეტა ჯორბენაძე</strong></td><td class="td-num">101.4</td><td class="td-money">$136,890</td><td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:100.0%"></div></div><div class="progress-pct">100.0%</div></div></td><td class="td-money" style="color:#aaa">—</td></tr>
+        <tr style="background:#fafafa;font-weight:700;"><td colspan="3" class="td-money">სულ ტოპ 10</td><td class="td-money">$1,724,014</td><td style="font-size:12px;color:#888;padding:13px 16px">კონტრაქტის 39.1%</td><td class="td-money" style="color:#ED1A3B">$398,324</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <span>Index Wealth Management · Riverside Project · კონფიდენციალური</span>
+    <span>მონაცემების წყარო: RiversideDataAnalysis.xlsx · განახლდა: 31.03.2026</span>
+  </footer>
+</div>
+
+<script>
+  const RED='#ED1A3B', GREY='#414042', LGREY='#c0c0c0', AMBER='#f59e0b', PURPLE='#7c3aed';
+  const MONTHS = [{"label": "Apr 2023", "actual": 0, "coll": 15900.0, "upcoming": 0}, {"label": "May 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Jun 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Jul 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Aug 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Sep 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Oct 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Nov 2023", "actual": 0, "coll": 2750.0, "upcoming": 0}, {"label": "Dec 2023", "actual": 1799.47, "coll": 2750.0, "upcoming": 0}, {"label": "Jan 2024", "actual": 12339.26, "coll": 14190.0, "upcoming": 0}, {"label": "Feb 2024", "actual": 2399.49, "coll": 4250.0, "upcoming": 0}, {"label": "Mar 2024", "actual": 13760.99, "coll": 13662.0, "upcoming": 0}, {"label": "Apr 2024", "actual": 5719.22, "coll": 5610.0, "upcoming": 0}, {"label": "May 2024", "actual": 37397.84, "coll": 38790.0, "upcoming": 0}, {"label": "Jun 2024", "actual": 11895.06, "coll": 11746.0, "upcoming": 0}, {"label": "Jul 2024", "actual": 509250.53, "coll": 512130.0, "upcoming": 0}, {"label": "Aug 2024", "actual": 6185.73, "coll": 7490.0, "upcoming": 0}, {"label": "Sep 2024", "actual": 9651.54, "coll": 11946.0, "upcoming": 0}, {"label": "Oct 2024", "actual": 5706.72, "coll": 7490.0, "upcoming": 0}, {"label": "Nov 2024", "actual": 53100.75, "coll": 54360.0, "upcoming": 0}, {"label": "Dec 2024", "actual": 68029.9, "coll": 61946.0, "upcoming": 0}, {"label": "Jan 2025", "actual": 7682.82, "coll": 7490.0, "upcoming": 0}, {"label": "Feb 2025", "actual": 68269.25, "coll": 58490.0, "upcoming": 0}, {"label": "Mar 2025", "actual": 10890.29, "coll": 12946.0, "upcoming": 0}, {"label": "Apr 2025", "actual": 90448.0, "coll": 90490.0, "upcoming": 0}, {"label": "May 2025", "actual": 299027.82, "coll": 295240.0, "upcoming": 0}, {"label": "Jun 2025", "actual": 102053.75, "coll": 107504.0, "upcoming": 0}, {"label": "Jul 2025", "actual": 140316.75, "coll": 176240.0, "upcoming": 0}, {"label": "Aug 2025", "actual": 15321.84, "coll": 12325.0, "upcoming": 0}, {"label": "Sep 2025", "actual": 265600.99, "coll": 247181.0, "upcoming": 0}, {"label": "Oct 2025", "actual": 79378.91, "coll": 155033.0, "upcoming": 0}, {"label": "Nov 2025", "actual": 48503.07, "coll": 321745.0, "upcoming": 0}, {"label": "Dec 2025", "actual": 362418.39, "coll": 399684.0, "upcoming": 0}, {"label": "Jan 2026", "actual": 87430.39, "coll": 18515.0, "upcoming": 0}, {"label": "Feb 2026", "actual": 29271.62, "coll": 314725.0, "upcoming": 0}, {"label": "Mar 2026", "actual": 354059.59, "coll": 350494.0, "upcoming": 0}, {"label": "Apr 2026", "actual": 176594.67, "coll": 211757.2, "upcoming": 0}, {"label": "May 2026", "actual": 295234.26, "coll": 135480.0, "upcoming": 0}, {"label": "Jun 2026", "actual": 0, "coll": 0, "upcoming": 408102.0}, {"label": "Jul 2026", "actual": 0, "coll": 0, "upcoming": 9085.0}, {"label": "Aug 2026", "actual": 0, "coll": 0, "upcoming": 9085.0}, {"label": "Sep 2026", "actual": 0, "coll": 0, "upcoming": 159365.0}, {"label": "Oct 2026", "actual": 0, "coll": 0, "upcoming": 6585.0}, {"label": "Nov 2026", "actual": 0, "coll": 0, "upcoming": 7151.0}, {"label": "Dec 2026", "actual": 0, "coll": 0, "upcoming": 86849.0}, {"label": "Jan 2027", "actual": 0, "coll": 0, "upcoming": 4585.0}, {"label": "Feb 2027", "actual": 0, "coll": 0, "upcoming": 4585.0}, {"label": "Mar 2027", "actual": 0, "coll": 0, "upcoming": 4585.0}, {"label": "Apr 2027", "actual": 0, "coll": 0, "upcoming": 4585.0}, {"label": "May 2027", "actual": 0, "coll": 0, "upcoming": 57405.0}, {"label": "Jun 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jul 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Aug 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Sep 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Oct 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Nov 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Dec 2027", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jan 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Feb 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Mar 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Apr 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "May 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jun 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jul 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Aug 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Sep 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Oct 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Nov 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Dec 2028", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jan 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Feb 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Mar 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Apr 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "May 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jun 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jul 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Aug 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Sep 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Oct 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Nov 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Dec 2029", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Jan 2030", "actual": 0, "coll": 0, "upcoming": 2750.0}, {"label": "Feb 2030", "actual": 0, "coll": 0, "upcoming": 2680.0}, {"label": "Mar 2030", "actual": 0, "coll": 0, "upcoming": 900.0}, {"label": "Apr 2030", "actual": 0, "coll": 0, "upcoming": 900.0}, {"label": "May 2030", "actual": 0, "coll": 0, "upcoming": 1050.0}];
+  const SALES_MIX = {"new": [0, 0, 0, 0, 0, 0, 0, 0, 1799.47, 11440.0, 0, 11362.74, 0, 1178.93, 0, 501840.74, 0, 0, 0, 46869.94, 48810.03, 0, 51001.34, 0, 82000.0, 286756.14, 22223.0, 1473.57, 1998.37, 157526.47, 9500.85, 37900.61, 104250.0, 1500.0, 18000.3, 329979.0, 155062.2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "existing": [0, 0, 0, 0, 0, 0, 0, 0, 0, 899.26, 2399.49, 2398.26, 5719.22, 36218.91, 11895.06, 7409.8, 6185.73, 9651.54, 5706.72, 6230.81, 19219.86, 7682.82, 17267.91, 10890.29, 8448.0, 12271.68, 79830.75, 138843.19, 13323.47, 108074.52, 69878.06, 10602.46, 258168.38, 85930.39, 11271.32, 24080.59, 21532.47, 295234.26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]};
+  const SALES_DYN = {"labels": ["Apr 2023", "May 2023", "Jun 2023", "Jul 2023", "Aug 2023", "Sep 2023", "Oct 2023", "Nov 2023", "Dec 2023", "Jan 2024", "Feb 2024", "Mar 2024", "Apr 2024", "May 2024", "Jun 2024", "Jul 2024", "Aug 2024", "Sep 2024", "Oct 2024", "Nov 2024", "Dec 2024", "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025", "May 2025", "Jun 2025", "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026"], "sqm": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 49.8, 0.0, 78.9, 0.0, 217.0, 0.0, 91.2, 0.0, 365.4, 0.0, 0.0, 0.0, 126.2, 49.6, 0.0, 118.2, 0.0, 110.6, 346.9, 147.7, 60.3, 89.8, 298.0, 61.1, 465.8, 131.2, 79.1, 0.0, 263.2, 170.2, 0.0], "value": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 77550.0, 0.0, 115905.0, 0.0, 339950.0, 0.0, 141435.0, 0.0, 524340.0, 0.0, 0.0, 0.0, 194350.0, 65800.0, 0.0, 170000.0, 0.0, 148470.0, 449750.0, 191360.0, 78390.0, 121562.0, 407060.0, 75153.0, 599924.0, 169616.0, 112830.0, 18000.0, 329979.0, 220922.0, 0.0]};
+  const PRICE_DATA = {"labels": ["Apr 2023", "May 2023", "Jun 2023", "Jul 2023", "Aug 2023", "Sep 2023", "Oct 2023", "Nov 2023", "Dec 2023", "Jan 2024", "Feb 2024", "Mar 2024", "Apr 2024", "May 2024", "Jun 2024", "Jul 2024", "Aug 2024", "Sep 2024", "Oct 2024", "Nov 2024", "Dec 2024", "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025", "May 2025", "Jun 2025", "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026"], "values": [0, 0, 0, 0, 0, 0, 0, 1557.0, 0, 1469.0, 0, 1567.0, 0, 1551.0, 0, 1435.0, 0, 0, 0, 1540.0, 1327.0, 0, 1438.0, 0, 1342.0, 1296.0, 1296.0, 1300.0, 1354.0, 1366.0, 1230.0, 1288.0, 1293.0, 1426.0, 0, 1254.0, 1298.0, 0]};
+  const PACE_DATA = {"labels": ["Apr 2023", "May 2023", "Jun 2023", "Jul 2023", "Aug 2023", "Sep 2023", "Oct 2023", "Nov 2023", "Dec 2023", "Jan 2024", "Feb 2024", "Mar 2024", "Apr 2024", "May 2024", "Jun 2024", "Jul 2024", "Aug 2024", "Sep 2024", "Oct 2024", "Nov 2024", "Dec 2024", "Jan 2025", "Feb 2025", "Mar 2025", "Apr 2025", "May 2025", "Jun 2025", "Jul 2025", "Aug 2025", "Sep 2025", "Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar 2026", "Apr 2026", "May 2026"], "units": [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 4, 0, 1, 0, 8, 0, 0, 0, 3, 1, 0, 1, 0, 3, 5, 2, 1, 1, 6, 1, 7, 2, 2, 2, 7, 2, 0], "avg": 1.6};
+  const AGING = {"d30": 46675, "d90": 271868, "d90p": 443497};
+  const FLOORS = {"labels": ["სართ. 1", "სართ. 2", "სართ. 3", "სართ. 4"], "sold": [150.6, 1084.6, 1235.2, 849.8], "for_sale": [1165.3, 431.9, 179.7, 383.0], "gadatsacemi": [374.6, 397.8, 170.1, 286.2], "dajabshnili": [290.4, 204.9, 535.8, 592.1]};
+  const FLOORS_BY_BLOCK = {"ა": {"labels": ["სართ. 1", "სართ. 2", "სართ. 3", "სართ. 4"], "sold": [0.0, 405.2, 648.8, 360.9], "for_sale": [577.8, 366.2, 118.5, 314.6], "gadatsacemi": [190.6, 221.1, 0.0, 188.4], "dajabshnili": [225.3, 70.2, 291.9, 190.2]}, "ბ": {"labels": ["სართ. 1", "სართ. 2", "სართ. 3", "სართ. 4"], "sold": [150.6, 679.4, 586.4, 488.9], "for_sale": [587.5, 65.7, 61.2, 68.4], "gadatsacemi": [184.0, 176.7, 170.1, 97.8], "dajabshnili": [65.1, 134.7, 243.9, 401.9]}};
+  const TYPES_DATA = {"labels": ["ბინა", "ავტოსადგომი"], "sold": [3320.2, 0], "for_sale": [2159.9, 0], "gadatsacemi": [1228.7, 0], "dajabshnili": [1623.2, 0]};
+  const BLOCKS = {"labels": ["ბლოკი ა", "ბლოკი ბ"], "sold": [1414.9, 1905.3], "for_sale": [1377.1, 782.8], "gadatsacemi": [600.1, 628.6], "dajabshnili": [777.6, 845.6]};
+  const BLOCK_KPIS = {"ა": {"contract": 1898174, "collected": 1424663, "remaining": 473511, "soldU": 25, "totalU": 62}, "ბ": {"contract": 2654172, "collected": 1758711, "remaining": 895462, "soldU": 36, "totalU": 62}};
+
+  function fmtK(v) { return v>=1000 ? '$'+(v/1000).toFixed(0)+'K' : v>0 ? '$'+v : '0'; }
+  const T = {color:'#999', font:{size:10}};
+
+  // Sales Dynamics — sqm
+  new Chart(document.getElementById('chartSalesSqm'), {
+    type:'bar',
+    data:{labels:SALES_DYN.labels, datasets:[{label:'გაყიდული (მ²)', data:SALES_DYN.sqm, backgroundColor:RED, borderRadius:3, borderSkipped:false}]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=> c.parsed.y.toLocaleString('en-US')+' მ²'}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:v=> v.toLocaleString('en-US')+' მ²'}}, x:{ticks:{maxRotation:90, minRotation:45, autoSkip:false, font:{size:9}}}}
+    }
+  });
+  // Sales Dynamics — value
+  new Chart(document.getElementById('chartSalesValue'), {
+    type:'line',
+    data:{labels:SALES_DYN.labels, datasets:[{label:'ფასი', data:SALES_DYN.value, borderColor:RED, backgroundColor:'rgba(237,26,59,0.08)', borderWidth:2, tension:0.25, fill:true, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:'#fff', pointBorderColor:RED, pointBorderWidth:2}]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>'$'+c.parsed.y.toLocaleString('en-US')}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:v=> '$'+(v/1000).toFixed(0)+'k'}}, x:{ticks:{maxRotation:90, minRotation:45, autoSkip:false, font:{size:9}}}}
+    }
+  });
+
+  // Cash flow: monthly income (stacked total with new vs existing split)
+  (() => {
+    const rows = MONTHS.map((m,i) => ({lbl:m.label, n:SALES_MIX.new[i]||0, e:SALES_MIX.existing[i]||0}))
+                       .filter(r => r.n > 0 || r.e > 0);
+    new Chart(document.getElementById('chartSalesMix'), {
+      type:'line',
+      data:{labels:rows.map(r=>r.lbl), datasets:[
+        {label:'ახალი გაყიდვება', data:rows.map(r=>r.n), fill:'origin', stack:'breakdown', borderColor:RED, backgroundColor:'rgba(237,26,59,0.25)', borderWidth:1.5, tension:0, pointRadius:0, pointHoverRadius:4, pointBackgroundColor:RED, hidden:true},
+        {label:'გამეორებითი გადახდა', data:rows.map(r=>r.e), fill:'-1', stack:'breakdown', borderColor:GREY, backgroundColor:'rgba(65,64,66,0.12)', borderWidth:1.5, tension:0, pointRadius:0, pointHoverRadius:4, pointBackgroundColor:GREY, hidden:true},
+        {label:'სულ შემოსავალი', data:rows.map(r=>r.n+r.e), fill:'origin', stack:'total', borderColor:RED, backgroundColor:'rgba(237,26,59,0.10)', borderWidth:2.5, tension:0, pointBackgroundColor:RED, pointRadius:5, pointHoverRadius:7}
+      ]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}, tooltip:{mode:'index',intersect:false,itemSort:(a,b)=>b.datasetIndex-a.datasetIndex,callbacks:{label:c=>' '+c.dataset.label+': $'+c.parsed.y.toLocaleString('en-US')}}},
+        scales:{x:{stacked:true,grid:{display:false},ticks:{...T,maxRotation:90,minRotation:45,autoSkip:false,font:{size:9}}},y:{stacked:true,beginAtZero:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T,callback:v=>fmtK(v)}}}
+      }
+    });
+  })();
+
+  // Cumulative
+  (() => {
+    let cA=0, cB=0;
+    const rows = MONTHS.map(m => {cA+=m.actual; cB+=m.coll; return {lbl:m.label, a:Math.round(cA), b:Math.round(cB)};});
+    new Chart(document.getElementById('chartCumulative'), {
+      type:'line',
+      data:{labels:rows.map(r=>r.lbl), datasets:[
+        {label:'გრაფიკი (კუმ.)', data:rows.map(r=>r.b), borderColor:LGREY, backgroundColor:'rgba(192,192,192,0.08)', borderWidth:2, borderDash:[5,3], pointRadius:0, fill:false, tension:0},
+        {label:'ფაქტი (კუმ.)', data:rows.map(r=>r.a), borderColor:RED, backgroundColor:'rgba(237,26,59,0.08)', borderWidth:2.5, pointRadius:0, fill:true, tension:0}
+      ]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}, tooltip:{callbacks:{label:c=>' '+c.dataset.label+': $'+c.parsed.y.toLocaleString('en-US')}}},
+        scales:{x:{grid:{display:false},ticks:{...T,maxRotation:90,minRotation:45,autoSkip:true,maxTicksLimit:20,font:{size:9}}}, y:{grid:{color:'rgba(0,0,0,0.04)'},beginAtZero:true,ticks:{...T,callback:v=>fmtK(v)}}}
+      }
+    });
+  })();
+
+  // Budget vs Actual
+  (() => {
+    const rows = MONTHS.filter(m => m.actual > 0 || m.coll > 0);
+    new Chart(document.getElementById('chartBudgetActual'), {
+      type:'bar',
+      data:{labels:rows.map(m=>m.label), datasets:[
+        {label:'ბიუჯეტი', backgroundColor:LGREY, borderRadius:2, data:rows.map(m=>m.coll)},
+        {label:'ფაქტი',   backgroundColor:RED,   borderRadius:2, data:rows.map(m=>m.actual)}
+      ]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}, tooltip:{callbacks:{label:c=>' '+c.dataset.label+': $'+c.parsed.y.toLocaleString('en-US')}}},
+        scales:{x:{grid:{display:false},ticks:{...T,maxRotation:90,minRotation:45,autoSkip:false,font:{size:9}}}, y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T,callback:v=>fmtK(v)}}}
+      }
+    });
+  })();
+
+  // Future
+  (() => {
+    const rows = MONTHS.filter(m => m.upcoming > 0);
+    new Chart(document.getElementById('chartFuture'), {
+      type:'bar',
+      data:{labels:rows.map(m=>m.label), datasets:[{label:'დაგეგმილი ($)', data:rows.map(m=>m.upcoming), backgroundColor:RED, borderRadius:2}]},
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>' $'+c.parsed.y.toLocaleString('en-US')}}},
+        scales:{x:{grid:{display:false},ticks:{...T,maxRotation:90,minRotation:45,autoSkip:true,maxTicksLimit:24,font:{size:9}}}, y:{grid:{color:'rgba(0,0,0,0.04)'},beginAtZero:true,ticks:{...T,callback:v=>fmtK(v)}}}
+      }
+    });
+  })();
+
+  // Aging
+  new Chart(document.getElementById('chartAging'), {
+    type:'doughnut',
+    data:{labels:['0–30 დღე: $'+AGING.d30.toLocaleString('en-US'),'31–90 დღე: $'+AGING.d90.toLocaleString('en-US'),'90+ დღე: $'+AGING.d90p.toLocaleString('en-US')],
+      datasets:[{data:[AGING.d30, AGING.d90, AGING.d90p], backgroundColor:['#4ade80',AMBER,RED], borderWidth:2, borderColor:'#fff', hoverOffset:6}]},
+    options:{responsive:true, maintainAspectRatio:false, cutout:'62%',
+      plugins:{legend:{display:true,position:'right',labels:{color:GREY,font:{size:11},boxWidth:14,padding:12}}, tooltip:{callbacks:{label:c=>' $'+c.parsed.toLocaleString('en-US')}}}
+    }
+  });
+
+  // Blocks sqm (apartments only)
+  new Chart(document.getElementById('chartBlocks'), {
+    type:'bar',
+    data:{labels:BLOCKS.labels, datasets:[
+      {label:'გაყიდული',   data:BLOCKS.sold,    backgroundColor:RED,    borderRadius:2},
+      {label:'გასაყიდი',   data:BLOCKS.for_sale, backgroundColor:LGREY,  borderRadius:2},
+      {label:'გადასაცემი', data:BLOCKS.gadatsacemi,  backgroundColor:AMBER,  borderRadius:2},
+      {label:'დაჯავშნილი', data:BLOCKS.dajabshnili,   backgroundColor:PURPLE, borderRadius:2}
+    ]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}},
+      scales:{x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T}},y:{stacked:true,grid:{display:false},ticks:{color:GREY,font:{size:12,weight:'600'}}}}
+    }
+  });
+
+  // Blocks value (contract, collected)
+  const bvLabels=['ბლოკი ა','ბლოკი ბ'];
+  const bvContract=['ა','ბ'].map(b=>BLOCK_KPIS[b].contract);
+  const bvCollected=['ა','ბ'].map(b=>BLOCK_KPIS[b].collected);
+  const bvRemaining=bvContract.map((c,i)=>c-bvCollected[i]);
+  new Chart(document.getElementById('chartBlocksValue'), {
+    type:'bar',
+    data:{labels:bvLabels, datasets:[
+      {label:'შემოსული', data:bvCollected, backgroundColor:RED, borderRadius:2},
+      {label:'მისაღები', data:bvRemaining, backgroundColor:LGREY, borderRadius:2}
+    ]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}, tooltip:{callbacks:{label:c=>' '+c.dataset.label+': $'+c.parsed.x.toLocaleString('en-US')}}},
+      scales:{x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T,callback:v=>fmtK(v)}},y:{stacked:true,grid:{display:false},ticks:{color:GREY,font:{size:12,weight:'600'}}}}
+    }
+  });
+
+  // Floors
+  new Chart(document.getElementById('chartFloors'), {
+    type:'bar',
+    data:{labels:FLOORS.labels, datasets:[
+      {label:'გაყიდული',   data:FLOORS.sold,    backgroundColor:RED,    borderRadius:2},
+      {label:'გასაყიდი',   data:FLOORS.for_sale, backgroundColor:LGREY,  borderRadius:2},
+      {label:'გადასაცემი', data:FLOORS.gadatsacemi,  backgroundColor:AMBER,  borderRadius:2},
+      {label:'დაჯავშნილი', data:FLOORS.dajabshnili,   backgroundColor:PURPLE, borderRadius:2}
+    ]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}},
+      scales:{x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T}},y:{stacked:true,grid:{display:false},ticks:{color:GREY,font:{size:12,weight:'600'}}}}
+    }
+  });
+
+  // Types
+  new Chart(document.getElementById('chartTypes'), {
+    type:'bar',
+    data:{labels:TYPES_DATA.labels, datasets:[
+      {label:'გაყიდული',   data:TYPES_DATA.sold,    backgroundColor:RED,    borderRadius:2},
+      {label:'გასაყიდი',   data:TYPES_DATA.for_sale, backgroundColor:LGREY,  borderRadius:2},
+      {label:'გადასაცემი', data:TYPES_DATA.gadatsacemi,  backgroundColor:AMBER,  borderRadius:2},
+      {label:'დაჯავშნილი', data:TYPES_DATA.dajabshnili,   backgroundColor:PURPLE, borderRadius:2}
+    ]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}},
+      scales:{x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T}},y:{stacked:true,grid:{display:false},ticks:{color:GREY,font:{size:12,weight:'600'}}}}
+    }
+  });
+
+  // Floors by Block A
+  new Chart(document.getElementById('chartFloorsA'), {
+    type:'bar',
+    data:{labels:FLOORS_BY_BLOCK['ა']['labels'], datasets:[
+      {label:'გაყიდული',   data:FLOORS_BY_BLOCK['ა']['sold'],    backgroundColor:RED,    borderRadius:2},
+      {label:'გასაყიდი',   data:FLOORS_BY_BLOCK['ა']['for_sale'], backgroundColor:LGREY,  borderRadius:2},
+      {label:'გადასაცემი', data:FLOORS_BY_BLOCK['ა']['gadatsacemi'],  backgroundColor:AMBER,  borderRadius:2},
+      {label:'დაჯავშნილი', data:FLOORS_BY_BLOCK['ა']['dajabshnili'],   backgroundColor:PURPLE, borderRadius:2}
+    ]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}},
+      scales:{x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T}},y:{stacked:true,grid:{display:false},ticks:{color:GREY,font:{size:12,weight:'600'}}}}
+    }
+  });
+
+  // Floors by Block B
+  new Chart(document.getElementById('chartFloorsB'), {
+    type:'bar',
+    data:{labels:FLOORS_BY_BLOCK['ბ']['labels'], datasets:[
+      {label:'გაყიდული',   data:FLOORS_BY_BLOCK['ბ']['sold'],    backgroundColor:RED,    borderRadius:2},
+      {label:'გასაყიდი',   data:FLOORS_BY_BLOCK['ბ']['for_sale'], backgroundColor:LGREY,  borderRadius:2},
+      {label:'გადასაცემი', data:FLOORS_BY_BLOCK['ბ']['gadatsacemi'],  backgroundColor:AMBER,  borderRadius:2},
+      {label:'დაჯავშნილი', data:FLOORS_BY_BLOCK['ბ']['dajabshnili'],   backgroundColor:PURPLE, borderRadius:2}
+    ]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}},
+      scales:{x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T}},y:{stacked:true,grid:{display:false},ticks:{color:GREY,font:{size:12,weight:'600'}}}}
+    }
+  });
+
+  // Pace
+  new Chart(document.getElementById('chartPace'), {
+    type:'bar',
+    data:{labels:PACE_DATA.labels, datasets:[
+      {type:'bar',  label:'გაყიდული ერთეული', data:PACE_DATA.units, backgroundColor:RED, borderRadius:3},
+      {type:'line', label:'საშ. ტემპი ('+PACE_DATA.avg+'/თვე)', data:Array(PACE_DATA.labels.length).fill(PACE_DATA.avg), borderColor:LGREY, borderWidth:1.5, borderDash:[5,3], pointRadius:0, fill:false, tension:0}
+    ]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'top',labels:{color:GREY,font:{size:11,weight:'600'},boxWidth:12,padding:14}}, tooltip:{callbacks:{label:c=> c.dataset.type==='line' ? null : ' '+c.parsed.y+' ერთეული'}}},
+      scales:{x:{grid:{display:false},ticks:{...T,maxRotation:90,minRotation:45,autoSkip:false,font:{size:9}}}, y:{grid:{color:'rgba(0,0,0,0.04)'},beginAtZero:true,ticks:{...T,stepSize:1}}}
+    }
+  });
+
+  // Price — filter to months with actual sales only, dynamic y-axis
+  (() => {
+    const rows = PRICE_DATA.labels.map((l,i) => ({lbl:l, v:PRICE_DATA.values[i]}))
+                                  .filter(r => r.v > 0);
+    const vals = rows.map(r => r.v);
+    const lo = Math.floor(Math.min(...vals) / 100) * 100 - 100;
+    const hi = Math.ceil(Math.max(...vals) / 100) * 100 + 100;
+    new Chart(document.getElementById('chartPrice'), {
+      type:'line',
+      data:{labels:rows.map(r=>r.lbl), datasets:[{label:'$/მ² (შეწ.)', data:vals, borderColor:RED, backgroundColor:'rgba(237,26,59,0.08)', borderWidth:2.5, pointRadius:5, pointHoverRadius:7, pointBackgroundColor:RED, fill:true, tension:0.3}]},
+      options:{responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>' $'+c.parsed.y.toLocaleString('en-US')+'/მ²'}}},
+        scales:{x:{grid:{display:false},ticks:{...T,maxRotation:45,minRotation:45}}, y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{...T,callback:v=>'$'+v.toLocaleString('en-US')}, min:lo, max:hi}}
+      }
+    });
+  })();
+</script>
+</body>
+</html>

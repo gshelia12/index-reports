@@ -192,14 +192,14 @@
     <div class="kpi-card">
       <div class="kpi-label">გაყიდული (მ²)</div>
       <div class="kpi-value" id="kpiSqm">2,508 მ²</div>
-      <div class="kpi-sub" id="kpiSqmSub">27.4% სულ 9,164 მ²-დან</div>
-      <div class="kpi-bar"><div class="kpi-bar-fill" id="barSqm" style="width:27.4%"></div></div>
+      <div class="kpi-sub" id="kpiSqmSub">56.5% გასაყიდი ბინების 4,439 მ²-დან</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" id="barSqm" style="width:56.5%"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">დარჩენილი (მ²)</div>
-      <div class="kpi-value" id="kpiRemSqm">4,860.0 მ²</div>
-      <div class="kpi-sub" id="kpiRemSqmSub">53.0% სულ 9,164 მ²-დან</div>
-      <div class="kpi-bar"><div class="kpi-bar-fill" id="barRemSqm" style="width:53.0%"></div></div>
+      <div class="kpi-value" id="kpiRemSqm">1,930.7 მ²</div>
+      <div class="kpi-sub" id="kpiRemSqmSub">43.5% გასაყიდი ბინების 4,439 მ²-დან</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" id="barRemSqm" style="width:43.5%"></div></div>
     </div>
   </div>
 
@@ -337,7 +337,7 @@
   const AGING = {"d30": 30662, "d90": 7517, "d90p": 3265};
   const CANCELLED = [{"code": "01.17.13.001.014.01.511.038", "name": "ვალერიანი დემურხანაშვილი", "typ": "ბინა", "area": 64.8, "price": 116640, "paid": 2324.21, "sold_on": "2025-12-26", "cancelled_on": null}, {"code": "01.17.13.001.014.01.511.047", "name": "ბაშირ ჰასან", "typ": "ბინა", "area": 52.5, "price": 99750, "paid": 1477.66, "sold_on": "2025-10-30", "cancelled_on": null}];
   const SALES_MIX = {"all": {"new": [20194.81, 0.0, 34400.44, 111155.02, 51452.65, 173466.16, 1037.11, 7715.0, 147466.77, 21496.78, 63279.8, 3269.47, 31412.62, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "existing": [0.0, 3000.15, 3120.31, 8700.42, 19115.94, 11965.3, 93144.52, 35224.45, 22928.67, 43064.37, 60094.79, 53415.92, 49876.21, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "ბინა": {"new": [20194.81, 0.0, 34400.44, 108654.56, 51452.65, 173466.16, 1037.11, 7000.0, 145216.77, 21496.78, 63279.8, 3269.47, 31000.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "existing": [0.0, 3000.15, 3120.31, 8700.42, 19115.94, 11965.3, 81258.41, 34543.45, 22247.67, 38318.37, 56620.79, 48041.55, 43319.23, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "კომერციული ფართი": {"new": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "existing": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "პარკინგი": {"new": [0.0, 0.0, 0.0, 2500.46, 0.0, 0.0, 0.0, 715.0, 2250.0, 0.0, 0.0, 0.0, 412.62, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "existing": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 11886.11, 681.0, 681.0, 4746.0, 3474.0, 5374.37, 6556.98, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, "საოფისე": {"new": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "existing": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}};
-  const KPI = {"all": {"contract": 4672892, "collected": 1069998, "remaining": 3602894, "soldU": 53, "totalU": 113, "soldSqm": 2508.2, "totalSqm": 9163.5, "sqRem": 4860.0, "sqRemPct": 53.0, "upcoming": 3602872, "overdue": 41444, "sqmPct": 27.4, "isPark": false}, "ბინა": {"contract": 4541892, "collected": 1030720, "remaining": 3511172, "soldU": 44, "totalU": 65, "soldSqm": 2508.2, "totalSqm": 6234.2, "sqRem": 1930.7, "sqRemPct": 31.0, "upcoming": 3509288, "overdue": 40463, "sqmPct": 40.2, "isPark": false}, "კომერციული ფართი": {"contract": 0, "collected": 0, "remaining": 0, "soldU": 0, "totalU": 2, "soldSqm": 0, "totalSqm": 1620.5, "sqRem": 1620.5, "sqRemPct": 100.0, "upcoming": 0, "overdue": 0, "sqmPct": 0.0, "isPark": false}, "პარკინგი": {"contract": 131000, "collected": 39278, "remaining": 91722, "soldU": 9, "totalU": 40, "soldSqm": 0, "totalSqm": 0, "sqRem": 0, "sqRemPct": 0, "upcoming": 93584, "overdue": 981, "sqmPct": 0, "isPark": true}, "საოფისე": {"contract": 0, "collected": 0, "remaining": 0, "soldU": 0, "totalU": 6, "soldSqm": 0, "totalSqm": 1308.8, "sqRem": 1308.8, "sqRemPct": 100.0, "upcoming": 0, "overdue": 0, "sqmPct": 0.0, "isPark": false}};
+  const KPI = {"all": {"contract": 4672892, "collected": 1069998, "remaining": 3602894, "soldU": 53, "totalU": 113, "soldSqm": 2508.2, "totalSqm": 4438.9, "sqRem": 1930.7, "sqRemPct": 43.5, "upcoming": 3602872, "overdue": 41444, "sqmPct": 56.5, "isPark": false, "sqmBaseGeo": "გასაყიდი ბინების", "totalSqmAllTypes": 9163.5}, "ბინა": {"contract": 4541892, "collected": 1030720, "remaining": 3511172, "soldU": 44, "totalU": 65, "soldSqm": 2508.2, "totalSqm": 4438.9, "sqRem": 1930.7, "sqRemPct": 43.5, "upcoming": 3509288, "overdue": 40463, "sqmPct": 56.5, "isPark": false, "sqmBaseGeo": "გასაყიდი ბინების", "totalSqmAllTypes": 6234.2}, "კომერციული ფართი": {"contract": 0, "collected": 0, "remaining": 0, "soldU": 0, "totalU": 2, "soldSqm": 0, "totalSqm": 1620.5, "sqRem": 1620.5, "sqRemPct": 100.0, "upcoming": 0, "overdue": 0, "sqmPct": 0.0, "isPark": false, "sqmBaseGeo": "გასაყიდი კომერციული ფართის", "totalSqmAllTypes": 1620.5}, "პარკინგი": {"contract": 131000, "collected": 39278, "remaining": 91722, "soldU": 9, "totalU": 40, "soldSqm": 0, "totalSqm": 0, "sqRem": 0, "sqRemPct": 0, "upcoming": 93584, "overdue": 981, "sqmPct": 0, "isPark": true, "sqmBaseGeo": "", "totalSqmAllTypes": 0}, "საოფისე": {"contract": 0, "collected": 0, "remaining": 0, "soldU": 0, "totalU": 6, "soldSqm": 0, "totalSqm": 1308.8, "sqRem": 1308.8, "sqRemPct": 100.0, "upcoming": 0, "overdue": 0, "sqmPct": 0.0, "isPark": false, "sqmBaseGeo": "გასაყიდი საოფისე ფართის", "totalSqmAllTypes": 1308.8}};
 
   // ── HELPERS ───────────────────────────────────────────────────────
   function fmtUSD(n) { return n===0 ? '—' : '$'+Math.round(n).toLocaleString('en-US'); }
@@ -658,7 +658,7 @@
     const remSqm    = kpi.isPark ? 0 : kpi.sqRem;
     const remSqmPct = kpi.isPark ? 0 : kpi.sqRemPct;
     document.getElementById('kpiRemSqm').textContent    = kpi.isPark ? '—' : remSqm.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' მ²';
-    document.getElementById('kpiRemSqmSub').textContent = kpi.isPark ? 'პარკინგი — ფართი არ ვრცელდება' : remSqmPct.toFixed(1) + '% სულ ' + fmtNum(Math.round(kpi.totalSqm)) + ' მ²-დან';
+    document.getElementById('kpiRemSqmSub').textContent = kpi.isPark ? 'პარკინგი — ფართი არ ვრცელდება' : remSqmPct.toFixed(1) + '% ' + kpi.sqmBaseGeo + ' ' + fmtNum(Math.round(kpi.totalSqm)) + ' მ²-დან';
     document.getElementById('barRemSqm').style.width    = remSqmPct.toFixed(1) + '%';
 
     // SQM KPI — hide for parking
@@ -672,7 +672,7 @@
       document.getElementById('barSqm').style.width    = '0%';
     } else {
       document.getElementById('kpiSqm').textContent    = Math.round(kpi.soldSqm).toLocaleString('en-US') + ' მ²';
-      document.getElementById('kpiSqmSub').textContent = kpi.sqmPct.toFixed(1) + '% სულ ' + Math.round(kpi.totalSqm).toLocaleString('en-US') + ' მ²-დან';
+      document.getElementById('kpiSqmSub').textContent = kpi.sqmPct.toFixed(1) + '% ' + kpi.sqmBaseGeo + ' ' + Math.round(kpi.totalSqm).toLocaleString('en-US') + ' მ²-დან';
       document.getElementById('barSqm').style.width    = kpi.sqmPct.toFixed(1) + '%';
     }
 

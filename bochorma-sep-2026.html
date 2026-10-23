@@ -135,8 +135,8 @@
     <div class="kpi-card">
       <div class="kpi-label">გაყიდული (მ²)</div>
       <div class="kpi-value" id="kpiSqm">17,514 მ²</div>
-      <div class="kpi-sub" id="kpiSqmSub">64.0% · სულ 27,384 მ²</div>
-      <div class="kpi-bar"><div class="kpi-bar-fill" id="barSqm" style="width:64.0%"></div></div>
+      <div class="kpi-sub" id="kpiSqmSub">73.8% · სულ 23,744 მ²</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" id="barSqm" style="width:73.8%"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">დარჩენილი (მ²)</div>
@@ -277,7 +277,7 @@
     }
   }
   const KPI = {
-    "all": {contract:29648480,collected:12454312,remaining:17194168,overdue:1374040,soldU:359,totalU:492,soldSqm:17513.5,totalSqm:27384,sqmPct:64.0,isPark:false},
+    "all": {contract:29648480,collected:12454312,remaining:17194168,overdue:1374040,soldU:359,totalU:492,soldSqm:17513.5,totalSqm:23744.2,sqmPct:73.8,isPark:false},
     "სასტუმრო ოთახი": {contract:20428280,collected:8517531,remaining:11910749,overdue:1280071,soldU:250,totalU:312,soldSqm:12398.9,totalSqm:16257.4,sqmPct:76.3,isPark:false},
     "ბინა": {contract:8573200,collected:3486779,remaining:5086421,overdue:81746,soldU:68,totalU:98,soldSqm:5114.6,totalSqm:7486.9,sqmPct:68.3,isPark:false},
     "პარკინგი": {contract:647000,collected:450002,remaining:196998,overdue:12223,soldU:41,totalU:78,soldSqm:null,totalSqm:null,sqmPct:0.0,isPark:true},
@@ -344,7 +344,7 @@
     document.getElementById('kpiRemaining').textContent=fmtUSD(kpi.remaining);
     document.getElementById('kpiRemainingSub').textContent=kpi.contract>0?'კონტრაქტის '+remPct.toFixed(1)+'%':'—';
     document.getElementById('barRemaining').style.width=remPct.toFixed(1)+'%';
-    const remTotSqm=KPI['all'].totalSqm-(KPI['კომერციული ფართი'].totalSqm||0),remSqmVal=remTotSqm-KPI['all'].soldSqm,remSqmPct=remTotSqm>0?(remSqmVal/remTotSqm*100):0;
+    const remTotSqm=KPI['all'].totalSqm,remSqmVal=remTotSqm-KPI['all'].soldSqm,remSqmPct=remTotSqm>0?(remSqmVal/remTotSqm*100):0;
     document.getElementById('kpiRemSqm').textContent=fmtNum(Math.round(remSqmVal))+' მ²';
     document.getElementById('kpiRemSqmSub').textContent=remSqmPct.toFixed(1)+'% სულ '+fmtNum(Math.round(remTotSqm))+' მ²-დან';
     document.getElementById('barRemSqm').style.width=remSqmPct.toFixed(1)+'%';
